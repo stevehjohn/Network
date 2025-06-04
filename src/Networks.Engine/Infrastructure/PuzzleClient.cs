@@ -86,7 +86,7 @@ public sealed class PuzzleClient : IDisposable
 
         for (var year = 2005; year <= now.Year; year++)
         {
-            using var response = _client.GetAsync($"/archive/traintracks/{difficulty.ToString().ToLower()}/{year}").Result;
+            using var response = _client.GetAsync($"/archive/network/{difficulty.ToString().ToLower()}/{year}").Result;
             
             var page = response.Content.ReadAsStringAsync().Result;
 

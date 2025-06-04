@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Net;
 using Networks.Console.Infrastructure;
 using Networks.Engine.Board;
 using Networks.Engine.Infrastructure;

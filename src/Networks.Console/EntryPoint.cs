@@ -1,16 +1,20 @@
-﻿using Networks.Engine.Infrastructure;
-using static System.Console;
+﻿using CommandLine;
+using Networks.Console.Infrastructure;
+using Networks.Console.Runners;
 
 namespace Networks.Console;
 
 public static class EntryPoint
 {
-    public static void Main()
+    public static void Main(string[] arguments)
     {
-        PuzzleManager.Path = "Data/Puzzles.json";
-
-        var grid = PuzzleManager.Instance.GetPuzzle(0);
+        var parser = new Parser(settings =>
+        {
+            settings.CaseInsensitiveEnumValues = true;
+        });
         
-        WriteLine(grid.ToString());
+        parser.ParseArguments<LocalOptions, RemoteOptions>(arguments)
+            .WithParsed<LocalOptions>(options => new Local().Run(options.PuzzleNumber))
+            .WithParsed<RemoteOptions>(options => new Remote().Run(options));
     }
 }
