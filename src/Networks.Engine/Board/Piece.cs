@@ -2,9 +2,9 @@ namespace Networks.Engine.Board;
 
 public enum Piece
 {
-    Straight,
-    Corner,
-    Tee,
-    Terminator,
-    OutOfBounds
+    Terminator = 1,
+    Corner = 2,
+    Straight = 3,
+    Tee = 4,
+    OutOfBounds = 5
 }
