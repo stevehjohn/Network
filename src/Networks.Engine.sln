@@ -10,6 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networks.Console", "Networks.Console\Networks.Console.csproj", "{A1A1C66C-02BA-4AD1-A264-B02B87E26B32}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{CA0F5444-ED34-44AD-A995-72E51E7E5949}"
+	ProjectSection(SolutionItems) = preProject
+		..\run-console.sh = ..\run-console.sh
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
