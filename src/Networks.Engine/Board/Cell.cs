@@ -4,7 +4,7 @@ public record struct Cell
 {
     public Piece Piece { get; private set; }
     
-    public Rotation Rotation { get; set; }
+    public Rotation Rotation { get; }
 
     public Cell(Piece piece, Rotation rotation)
     {
