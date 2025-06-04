@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Networks.Engine.Infrastructure;
 using Networks.Engine.Models;
 
@@ -8,20 +9,20 @@ public class Grid
     private Piece[] _pieces;
 
     public int Width { get; private set; }
-    
+
     public int Height { get; private set; }
-    
+
     public int Bottom { get; private set; }
 
     public int Right { get; private set; }
-    
+
     public Point PowerSource { get; private set; }
 
     public Piece this[int x, int y]
     {
         get
         {
-            if (x < 0 || x > Right || y < 0 || y > Bottom)
+            if (! IsInBounds(x, y))
             {
                 return Piece.OutOfBounds;
             }
@@ -30,9 +31,9 @@ public class Grid
         }
         set
         {
-            if (x < 0 || x > Right || y < 0 || y > Bottom)
+            if (! IsInBounds(x, y))
             {
-                throw new PuzzleException($"{x}, {y} is outside of the grid's bounds ({Width}x{Height}).");
+                throw new PuzzleException($"{x}, {y} is outside of the grid's bounds (0..{Right}, 0..{Bottom}).");
             }
 
             _pieces[x + y * Width] = value;
@@ -54,14 +55,22 @@ public class Grid
 
         Bottom = Height - 1;
 
-        for (var x = 0; x < Width; x++)
+        _pieces = new Piece[Width * Height];
+
+        for (var y = 0; y < Height; y++)
         {
-            for (var y = 0; y < Height; y++)
+            for (var x = 0; x < Width; x++)
             {
                 this[x, y] = puzzle.Data.GridLayout[y * Width + x];
             }
         }
 
         PowerSource = new Point(puzzle.Data.PowerCell % Width, puzzle.Data.PowerCell / Width);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private bool IsInBounds(int x, int y)
+    {
+        return x >= 0 && x < Width && y >= 0 && y < Height;
     }
 }
