@@ -30,7 +30,7 @@ public class Grid
                 return new Cell(Piece.OutOfBounds, Rotation.Zero);
             }
 
-            return _cells[x + y * Width];
+            return _cells[Index(x, y)];
         }
         private set
         {
@@ -39,13 +39,52 @@ public class Grid
                 throw new PuzzleException($"{x}, {y} is outside of the grid's bounds (0..{Right}, 0..{Bottom}).");
             }
 
-            _cells[x + y * Width] = value;
+            _cells[Index(x, y)] = value;
         }
     }
 
     public Grid(Puzzle puzzle)
     {
         Initialise(puzzle);
+    }
+
+    public void SetRotation(int x, int y, Rotation rotation)
+    {
+        _cells[Index(x, y)] = new Cell(_cells[Index(x, y)].Piece, rotation);
+    }
+
+    public Grid Clone()
+    {
+        var clone = new Grid
+        {
+            Width = Width,
+            Height = Height,
+            Right = Right,
+            Bottom = Bottom,
+            _cells = new Cell[Width * Height],
+            PowerSource = PowerSource
+        };
+
+        for (var y = 0; y < Height; y++)
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                var cell = _cells[Index(x, y)];
+
+                clone._cells[Index(x, y)] = new Cell(cell.Piece, cell.Rotation);
+            }
+        }
+
+        return clone;
+    }
+
+    private Grid()
+    {
+    }
+
+    private int Index(int x, int y)
+    {
+        return x + y * Width;
     }
 
     private void Initialise(Puzzle puzzle)
@@ -64,7 +103,7 @@ public class Grid
         {
             for (var x = 0; x < Width; x++)
             {
-                _cells[x + y * Width] = new Cell(puzzle.Data.GridLayout[x + y * Width], Rotation.Zero);
+                _cells[Index(x, y)] = new Cell(puzzle.Data.GridLayout[x + y * Width], Rotation.Zero);
             }
         }
 
@@ -79,7 +118,7 @@ public class Grid
         {
             for (var x = 0; x < Width; x++)
             {
-                _cells[x + y * Width] = new Cell(_cells[x + y * Width].Piece, (Rotation) _random.Next(4));
+                _cells[Index(x, y)] = new Cell(_cells[Index(x, y)].Piece, (Rotation) _random.Next(4));
             }
         }
     }
@@ -98,22 +137,46 @@ public class Grid
         {
             for (var x = 0; x < Width; x++)
             {
-                switch (_cells[x + y * Width].Piece)
+                var cell = _cells[Index(x, y)];
+                
+                switch (cell.Piece)
                 {
                     case Piece.Straight:
-                        builder.Append('─');
+                        builder.Append(cell.Rotation switch
+                        {
+                            Rotation.Zero or Rotation.OneEighty => '│',
+                            _ => '─'
+                        });
                         break;
 
                     case Piece.Corner:
-                        builder.Append('│');
+                        builder.Append(cell.Rotation switch
+                        {
+                            Rotation.Zero => '┌',
+                            Rotation.Ninety => '┐',
+                            Rotation.OneEighty => '└',
+                            _ => '┘'
+                        });
                         break;
 
                     case Piece.Tee:
-                        builder.Append('┌');
+                        builder.Append(cell.Rotation switch
+                        {
+                            Rotation.Zero => '┬',
+                            Rotation.Ninety => '┤',
+                            Rotation.OneEighty => '┴',
+                            _ => '├'
+                        });
                         break;
 
                     case Piece.Terminator:
-                        builder.Append('┌');
+                        builder.Append(cell.Rotation switch
+                        {
+                            Rotation.Zero => '╸',
+                            Rotation.Ninety => '╹',
+                            Rotation.OneEighty => '╺',
+                            _ => '╻'
+                        });
                         break;
                 }
             }
