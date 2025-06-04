@@ -1,0 +1,30 @@
+using System.Diagnostics.CodeAnalysis;
+
+namespace Networks.Engine.Board;
+
+public readonly record struct Point
+{
+    public int X { get; }
+    
+    public int Y { get; }
+
+    public Point(int x, int y)
+    {
+        X = x;
+        
+        Y = y;
+    }
+
+    public Point(Point point)
+    {
+        X = point.X;
+        
+        Y = point.Y;
+    }
+
+    [ExcludeFromCodeCoverage]
+    public override string ToString()
+    {
+        return $"({X}, {Y})";
+    }
+}
