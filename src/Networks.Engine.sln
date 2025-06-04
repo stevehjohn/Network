@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networks.Engine", "Networks.Engine\Networks.Engine.csproj", "{3CC7D925-865F-4B66-86E8-6A011A10594F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E743DEC-60EF-4A62-A722-A497E2FBDAEA}"
+	ProjectSection(SolutionItems) = preProject
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3CC7D925-865F-4B66-86E8-6A011A10594F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CC7D925-865F-4B66-86E8-6A011A10594F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CC7D925-865F-4B66-86E8-6A011A10594F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CC7D925-865F-4B66-86E8-6A011A10594F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
