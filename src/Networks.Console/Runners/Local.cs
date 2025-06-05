@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Networks.Engine;
 using Networks.Engine.Board;
 using Networks.Engine.Infrastructure;
 using static System.Console;
@@ -15,10 +16,10 @@ public class Local
     {
         Clear();
         
-        // var solver = new Solver
-        // {
-        //     StepCallback = VisualiseStep
-        // };
+        var solver = new Solver
+        {
+            StepCallback = VisualiseStep
+        };
 
         PuzzleManager.Path = "Data/Puzzles.json";
         
@@ -32,19 +33,19 @@ public class Local
         
         _stopwatch = Stopwatch.StartNew();
         
-        // var result = solver.Solve(puzzle);
-        //
-        // CursorTop = puzzle.Height + 3;
-        //
-        // WriteLine(puzzle.ToString());
-        //
-        // WriteLine($"Solve state: {result}                 ");
-        //
-        // WriteLine($"Steps:       {_count:N0}              ");
-        //         
-        // WriteLine($@"Elapsed:     {_stopwatch.Elapsed:h\:mm\:ss\.fff}");
-        //
-        // WriteLine();
+        var result = solver.Solve(puzzle);
+        
+        CursorTop = puzzle.Height + 3;
+        
+        WriteLine(puzzle.ToString());
+        
+        WriteLine($"Solve state: {result}                 ");
+        
+        WriteLine($"Steps:       {_count:N0}              ");
+                
+        WriteLine($@"Elapsed:     {_stopwatch.Elapsed:h\:mm\:ss\.fff}");
+        
+        WriteLine();
     }
 
     private void VisualiseStep(Grid grid)
