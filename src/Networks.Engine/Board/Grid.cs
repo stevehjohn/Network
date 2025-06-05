@@ -154,8 +154,8 @@ public class Grid
                         {
                             Rotation.Zero => '┌',
                             Rotation.Ninety => '┐',
-                            Rotation.OneEighty => '└',
-                            _ => '┘'
+                            Rotation.OneEighty => '┘',
+                            _ => '└'
                         });
                         break;
 
