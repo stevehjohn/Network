@@ -46,6 +46,6 @@ public class TileMapper
         
         _tiles.Add(new Cell(Piece.Terminator, Rotation.OneEighty), contentManager.Load<Texture2D>("end-south"));
         
-        _tiles.Add(new Cell(Piece.Terminator, Rotation.TwoSeventy), contentManager.Load<Texture2D>("ebd-west"));
+        _tiles.Add(new Cell(Piece.Terminator, Rotation.TwoSeventy), contentManager.Load<Texture2D>("end-west"));
     }
 }
