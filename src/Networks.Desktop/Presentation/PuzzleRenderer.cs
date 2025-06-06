@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Input;
 using Networks.Desktop.Infrastructure;
 using Networks.Engine;
 using Networks.Engine.Board;
-using Constants = Microsoft.VisualBasic.Constants;
 
 namespace Networks.Desktop.Presentation;
 
@@ -40,6 +39,8 @@ public class PuzzleRenderer : Game
 
     private bool _isComplete;
 
+    private SpriteFont _font;
+    
     private SpriteFont _smallFont;
 
     private long _stepCount;
@@ -93,6 +94,8 @@ public class PuzzleRenderer : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         _tileMapper.LoadContent(Content);
+
+        _font = Content.Load<SpriteFont>("font");
 
         _smallFont = Content.Load<SpriteFont>("small-font");
     }
