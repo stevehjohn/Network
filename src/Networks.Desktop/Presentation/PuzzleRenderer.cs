@@ -41,8 +41,6 @@ public class PuzzleRenderer : Game
 
     private bool _isComplete;
 
-    private SpriteFont _font;
-
     private SpriteFont _smallFont;
 
     private long _stepCount;
@@ -96,8 +94,6 @@ public class PuzzleRenderer : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         _tileMapper.LoadContent(Content);
-        
-        _font = Content.Load<SpriteFont>("font");
 
         _smallFont = Content.Load<SpriteFont>("small-font");
     }
