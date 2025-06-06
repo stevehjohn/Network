@@ -8,6 +8,8 @@ public class Solver
     
     public Action<Grid> StepCallback { get; set; }
     
+    public Action<(Piece Piece, int X, int Y)> DeltaStepCallback { get; init; }
+
     public bool Solve(Grid grid)
     {
         _grid = grid;
