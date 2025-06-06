@@ -15,19 +15,19 @@ namespace Networks.Desktop.Presentation;
 public class PuzzleRenderer : Game
 {
     private readonly int _width;
-    
+
     private readonly int _height;
 
     private readonly Solver _solver;
-    
+
     private readonly ConcurrentQueue<(Cell Cell, int X, int Y)> _changeQueue = [];
-    
+
     private readonly Stopwatch _stopwatch = new();
 
     private readonly FrameCounter _frameCounter = new();
-    
+
     private int _skipFrames = 1;
-    
+
     private readonly TileMapper _tileMapper;
 
     // ReSharper disable once NotAccessedField.Local
@@ -40,27 +40,27 @@ public class PuzzleRenderer : Game
     private bool _isComplete;
 
     private SpriteFont _font;
-    
+
     private SpriteFont _smallFont;
 
     private long _stepCount;
 
     private long _frameCount;
-    
+
     private Task _task;
 
     private Grid _grid;
 
     private Grid _screenGrid;
-    
+
     private KeyboardState? _previousKeyboardState;
-    
+
     public Grid Grid
     {
         private get => _grid;
         set
         {
-            _grid = value; 
+            _grid = value;
             _screenGrid = _grid!.Clone();
         }
     }
@@ -70,7 +70,7 @@ public class PuzzleRenderer : Game
         _width = Constants.PuzzleMaxWidth * Constants.TileWidth;
 
         _height = Constants.PuzzleMaxHeight * Constants.TileHeight / 2 + Constants.TileHeight * 6;
-            
+
         _graphics = new GraphicsDeviceManager(this)
         {
             PreferredBackBufferWidth = _width,
@@ -80,9 +80,9 @@ public class PuzzleRenderer : Game
         Content.RootDirectory = "_Content";
 
         _tileMapper = new TileMapper();
-        
+
         IsMouseVisible = true;
-        
+
         _solver = new Solver
         {
             DeltaStepCallback = EnqueueStep
@@ -103,13 +103,13 @@ public class PuzzleRenderer : Game
     protected override void Update(GameTime gameTime)
     {
         _frameCounter.Update((float) gameTime.ElapsedGameTime.TotalSeconds);
-        
+
         if (! _isSolving)
         {
             _task = new Task(() =>
             {
                 Thread.Sleep(1_000);
-                
+
                 _stopwatch.Restart();
 
                 try
@@ -120,12 +120,12 @@ public class PuzzleRenderer : Game
                 {
                     Console.WriteLine(exception);
                 }
-                
+
                 _isComplete = true;
             });
 
             _isSolving = true;
-            
+
             _task.Start();
         }
 
@@ -136,14 +136,14 @@ public class PuzzleRenderer : Game
             if (_previousKeyboardState.Value.IsKeyDown(Keys.Right) && keyboardState.IsKeyUp(Keys.Right))
             {
                 _skipFrames *= 2;
-                
+
                 _skipFrames = Math.Min(_skipFrames, 1_000_000);
             }
 
             if (_previousKeyboardState.Value.IsKeyDown(Keys.Left) && keyboardState.IsKeyUp(Keys.Left))
             {
                 _skipFrames /= 2;
-                
+
                 _skipFrames = Math.Max(_skipFrames, 1);
             }
         }
@@ -159,14 +159,14 @@ public class PuzzleRenderer : Game
 
         _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
 
-        if (!_changeQueue.IsEmpty)
+        if (! _changeQueue.IsEmpty)
         {
             for (var i = 0; i < _skipFrames; i++)
             {
                 if (_changeQueue.TryDequeue(out var step))
                 {
                     _frameCount++;
-                    
+
                     _screenGrid[step.X, step.Y] = step.Cell;
                 }
             }
@@ -187,16 +187,7 @@ public class PuzzleRenderer : Game
         {
             for (var x = 0; x < Grid.Width; x++)
             {
-                Texture2D tile;
-                
-                try
-                {
-                    tile = _tileMapper.GetTile(_screenGrid![x, y]);
-                }
-                catch
-                {
-                    continue;
-                }
+                var tile = _tileMapper.GetTile(_screenGrid![x, y]);
 
                 var isometricX = (x - y) * Constants.TileWidth / 2 + originX;
 
@@ -210,11 +201,11 @@ public class PuzzleRenderer : Game
         }
 
         var padding = (int) _font.MeasureString("0").X / 2;
-        
+
         var fontHeight = (int) _font.MeasureString("0").Y;
 
         var text = $"{_frameCount:N0} / {_stepCount:N0}";
-        
+
         _spriteBatch.DrawString(_font, text, new Vector2(padding * 4, _height - fontHeight * 2), Color.White);
 
         text = @$"{_stopwatch.Elapsed:h\:mm\:ss\.fff}";
