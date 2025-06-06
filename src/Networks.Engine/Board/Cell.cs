@@ -1,17 +1,19 @@
 namespace Networks.Engine.Board;
 
-public record struct Cell
+public readonly record struct Cell
 {
-    public Piece Piece { get; private set; }
+    public Piece Piece { get; private init; }
     
-    public Rotation Rotation { get; private set;  }
+    public Rotation Rotation { get; private init;  }
     
-    public bool IsPowered { get; private set; }
+    public bool IsPowered { get; private init; }
 
-    public Cell(Piece piece, Rotation rotation, bool powered)
+    public Cell(Piece piece, Rotation rotation, bool isPowered)
     {
         Piece = piece;
 
         Rotation = rotation;
+
+        IsPowered = isPowered;
     }
 }
