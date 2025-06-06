@@ -16,16 +16,20 @@ public class TileMapper
 
     public void LoadContent(ContentManager contentManager)
     {
-        _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("north-east"));
-        
         _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("south-east"));
         
-        _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("south-west"));
+        _tiles.Add(new Cell(Piece.Corner, Rotation.Ninety), contentManager.Load<Texture2D>("south-west"));
         
-        _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("north-west"));
+        _tiles.Add(new Cell(Piece.Corner, Rotation.OneEighty), contentManager.Load<Texture2D>("north-west"));
         
-        _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("vertical"));
+        _tiles.Add(new Cell(Piece.Corner, Rotation.TwoSeventy), contentManager.Load<Texture2D>("north-east"));
         
-        _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("horizontal"));
+        _tiles.Add(new Cell(Piece.Straight, Rotation.Zero), contentManager.Load<Texture2D>("vertical"));
+        
+        _tiles.Add(new Cell(Piece.Straight, Rotation.Ninety), contentManager.Load<Texture2D>("horizontal"));
+
+        _tiles.Add(new Cell(Piece.Straight, Rotation.OneEighty), contentManager.Load<Texture2D>("vertical"));
+        
+        _tiles.Add(new Cell(Piece.Straight, Rotation.TwoSeventy), contentManager.Load<Texture2D>("horizontal"));
     }
 }

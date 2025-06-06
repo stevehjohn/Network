@@ -187,7 +187,16 @@ public class PuzzleRenderer : Game
         {
             for (var x = 0; x < Grid.Width; x++)
             {
-                var tile = _tileMapper.GetTile(_screenGrid![x, y]);
+                Texture2D tile;
+                
+                try
+                {
+                    tile = _tileMapper.GetTile(_screenGrid![x, y]);
+                }
+                catch
+                {
+                    continue;
+                }
 
                 var isometricX = (x - y) * Constants.TileWidth / 2 + originX;
 

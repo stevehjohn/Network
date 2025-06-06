@@ -109,7 +109,7 @@ public class Grid
 
         PowerSource = new Point(puzzle.Data.PowerCell % Width, puzzle.Data.PowerCell / Width);
         
-        Randomise();
+        //Randomise();
     }
 
     private void Randomise()
