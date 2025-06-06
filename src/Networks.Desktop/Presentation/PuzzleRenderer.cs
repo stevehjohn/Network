@@ -195,7 +195,8 @@ public class PuzzleRenderer : Game
 
                 var isometricY = (x + y) * Constants.TileCentre + originY;
 
-                var colour = cell.IsPowered ? Color.Orange : Color.White;
+                var colour = x == Grid.PowerSource.X && y == Grid.PowerSource.Y ? Color.OrangeRed : 
+                    cell.IsPowered ? Color.Orange : Color.White;
 
                 _spriteBatch.Draw(tile, new Rectangle(isometricX, isometricY, Constants.TileWidth, Constants.TileHeight),
                     new Rectangle(0, 0, Constants.TileWidth, Constants.TileHeight), colour, 0, Vector2.Zero, SpriteEffects.None, (x + y) / 100f);
