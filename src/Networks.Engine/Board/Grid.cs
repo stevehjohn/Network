@@ -117,7 +117,7 @@ public class Grid
             }
         }
         
-        Randomise();
+        //Randomise();
     }
 
     private void Randomise()
@@ -152,7 +152,33 @@ public class Grid
         {
             var move = queue.Dequeue();
 
-            var nextCell = this[move.Position + move.Direction];
+            cell = this[move.Position];
+
+            var nextPosition = move.Position + move.Direction;
+
+            var nextCell = this[nextPosition];
+
+            if (nextCell.Piece == Piece.OutOfBounds)
+            {
+                continue;
+            }
+
+            var nextDirections = Connector.Connections[(nextCell.Piece, nextCell.Rotation)];
+
+            if (nextDirections.Contains(new Direction(-move.Direction.Dx, move.Direction.Dy)))
+            {
+                this[nextPosition] = new Cell(nextCell.Piece, nextCell.Rotation, true);
+
+                foreach (var nextDirection in nextDirections)
+                {
+                    if (nextDirection.Dx == -move.Direction.Dx && nextDirection.Dy == -move.Direction.Dy)
+                    {
+                        continue;
+                    }
+
+                    queue.Enqueue((nextPosition, nextDirection));
+                }
+            }
         }
     }
 
