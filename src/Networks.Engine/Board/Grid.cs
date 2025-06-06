@@ -43,6 +43,12 @@ public class Grid
         }
     }
 
+    public Cell this[Point position]
+    {
+        get => this[position.X, position.Y];
+        set => this[position.X, position.Y] = value;
+    }
+
     public Grid(Puzzle puzzle)
     {
         Initialise(puzzle);
@@ -124,6 +130,29 @@ public class Grid
                 
                 _cells[Index(x, y)] = new Cell(cell.Piece, (Rotation) _random.Next(4), cell.IsPowered);
             }
+        }
+        
+        CheckInitialPoweredCells();
+    }
+
+    private void CheckInitialPoweredCells()
+    {
+        var queue = new Queue<(Point Position, Direction Direction)>();
+
+        var cell = this[PowerSource];
+
+        var directions = Connector.Connections[(cell.Piece, cell.Rotation)];
+
+        foreach (var direction in directions)
+        {
+            queue.Enqueue((PowerSource, direction));
+        }
+
+        while (queue.Count > 0)
+        {
+            var move = queue.Dequeue();
+
+            var nextCell = this[move.Position + move.Direction];
         }
     }
 

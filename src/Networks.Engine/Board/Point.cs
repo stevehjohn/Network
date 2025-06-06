@@ -15,12 +15,7 @@ public readonly record struct Point
         Y = y;
     }
 
-    public Point(Point point)
-    {
-        X = point.X;
-        
-        Y = point.Y;
-    }
+    public static Point operator +(Point point, Direction direction) => new(point.X + direction.Dx, point.Y + direction.Dy);
 
     [ExcludeFromCodeCoverage]
     public override string ToString()
