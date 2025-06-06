@@ -10,7 +10,6 @@ using Networks.Desktop.Infrastructure;
 using Networks.Engine;
 using Networks.Engine.Board;
 using Constants = Microsoft.VisualBasic.Constants;
-using Point = Microsoft.Xna.Framework.Point;
 
 namespace Networks.Desktop.Presentation;
 

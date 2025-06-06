@@ -1,4 +1,5 @@
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 using JetBrains.Annotations;
 using Networks.Engine.Board;
@@ -11,6 +12,4 @@ public class Data
     public Piece[] GridLayout { get; set; } = [];
 
     public int PowerCell { get; set; }
-
-    public int[] VerticalClues { get; set; } = [];
 }
