@@ -27,7 +27,7 @@ public class Grid
         {
             if (! IsInBounds(x, y))
             {
-                return new Cell(Piece.OutOfBounds, Rotation.Zero);
+                return new Cell(Piece.OutOfBounds, Rotation.Zero, false);
             }
 
             return _cells[Index(x, y)];
@@ -50,7 +50,7 @@ public class Grid
 
     public void SetRotation(int x, int y, Rotation rotation)
     {
-        _cells[Index(x, y)] = new Cell(_cells[Index(x, y)].Piece, rotation);
+        _cells[Index(x, y)] = new Cell(_cells[Index(x, y)].Piece, rotation, false);
     }
 
     public Grid Clone()
@@ -71,7 +71,7 @@ public class Grid
             {
                 var cell = _cells[Index(x, y)];
 
-                clone._cells[Index(x, y)] = new Cell(cell.Piece, cell.Rotation);
+                clone._cells[Index(x, y)] = new Cell(cell.Piece, cell.Rotation, cell.IsPowered);
             }
         }
 
@@ -99,17 +99,19 @@ public class Grid
 
         _cells = new Cell[Width * Height];
 
+        PowerSource = new Point(puzzle.Data.PowerCell % Width, puzzle.Data.PowerCell / Width);
+
         for (var y = 0; y < Height; y++)
         {
             for (var x = 0; x < Width; x++)
             {
-                _cells[Index(x, y)] = new Cell(puzzle.Data.GridLayout[x + y * Width], Rotation.Zero);
+                var powered = x == PowerSource.X && y == PowerSource.Y;
+                
+                _cells[Index(x, y)] = new Cell(puzzle.Data.GridLayout[x + y * Width], Rotation.Zero, powered);
             }
         }
-
-        PowerSource = new Point(puzzle.Data.PowerCell % Width, puzzle.Data.PowerCell / Width);
         
-        //Randomise();
+        Randomise();
     }
 
     private void Randomise()
@@ -118,7 +120,9 @@ public class Grid
         {
             for (var x = 0; x < Width; x++)
             {
-                _cells[Index(x, y)] = new Cell(_cells[Index(x, y)].Piece, (Rotation) _random.Next(4));
+                var cell = _cells[Index(x, y)];
+                
+                _cells[Index(x, y)] = new Cell(cell.Piece, (Rotation) _random.Next(4), cell.IsPowered);
             }
         }
     }

@@ -187,13 +187,15 @@ public class PuzzleRenderer : Game
         {
             for (var x = 0; x < Grid.Width; x++)
             {
-                var tile = _tileMapper.GetTile(_screenGrid![x, y]);
+                var cell = _screenGrid[x, y];
+                
+                var tile = _tileMapper.GetTile(cell);
 
                 var isometricX = (x - y) * Constants.TileWidth / 2 + originX;
 
                 var isometricY = (x + y) * Constants.TileCentre + originY;
 
-                var colour = x == Grid.PowerSource.X && y == Grid.PowerSource.Y ? Color.Orange : Color.White;
+                var colour = cell.IsPowered ? Color.Orange : Color.White;
 
                 _spriteBatch.Draw(tile, new Rectangle(isometricX, isometricY, Constants.TileWidth, Constants.TileHeight),
                     new Rectangle(0, 0, Constants.TileWidth, Constants.TileHeight), colour, 0, Vector2.Zero, SpriteEffects.None, (x + y) / 100f);
