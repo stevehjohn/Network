@@ -118,6 +118,8 @@ public class Grid
         }
         
         //Randomise();
+        
+        CheckInitialPoweredCells();
     }
 
     private void Randomise()
@@ -148,11 +150,16 @@ public class Grid
             queue.Enqueue((PowerSource, direction));
         }
 
+        var visited = new HashSet<Point>();
+
         while (queue.Count > 0)
         {
             var move = queue.Dequeue();
 
-            cell = this[move.Position];
+            if (! visited.Add(move.Position))
+            {
+                continue;
+            }
 
             var nextPosition = move.Position + move.Direction;
 
