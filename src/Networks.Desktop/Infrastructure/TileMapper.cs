@@ -7,31 +7,25 @@ namespace Networks.Desktop.Infrastructure;
 
 public class TileMapper
 {
-    private readonly Dictionary<Piece, Texture2D> _tiles = new();
+    private readonly Dictionary<Cell, Texture2D> _tiles = new();
 
-    public Texture2D GetTile(Piece piece)
+    public Texture2D GetTile(Cell cell)
     {
-        return _tiles[piece];
+        return _tiles[cell];
     }
 
     public void LoadContent(ContentManager contentManager)
     {
-        _tiles.Add(Piece.NorthEast, contentManager.Load<Texture2D>("north-east"));
+        _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("north-east"));
         
-        _tiles.Add(Piece.SouthEast, contentManager.Load<Texture2D>("south-east"));
+        _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("south-east"));
         
-        _tiles.Add(Piece.SouthWest, contentManager.Load<Texture2D>("south-west"));
+        _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("south-west"));
         
-        _tiles.Add(Piece.NorthWest, contentManager.Load<Texture2D>("north-west"));
+        _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("north-west"));
         
-        _tiles.Add(Piece.Vertical, contentManager.Load<Texture2D>("vertical"));
+        _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("vertical"));
         
-        _tiles.Add(Piece.Horizontal, contentManager.Load<Texture2D>("horizontal"));
-        
-        _tiles.Add(Piece.Empty, contentManager.Load<Texture2D>("grass"));
-        
-        _tiles.Add(Piece.Placeholder, contentManager.Load<Texture2D>("grass"));
-        
-        _tiles.Add(Piece.Cross, contentManager.Load<Texture2D>("grass"));
+        _tiles.Add(new Cell(Piece.Corner, Rotation.Zero), contentManager.Load<Texture2D>("horizontal"));
     }
 }
