@@ -20,7 +20,7 @@ public class PuzzleRenderer : Game
 
     private readonly Solver _solver;
     
-    private readonly ConcurrentQueue<(Piece Piece, int X, int Y)> _changeQueue = [];
+    private readonly ConcurrentQueue<(Cell Cell, int X, int Y)> _changeQueue = [];
     
     private readonly Stopwatch _stopwatch = new();
 
@@ -167,12 +167,7 @@ public class PuzzleRenderer : Game
                 {
                     _frameCount++;
                     
-                    _screenGrid[step.X, step.Y] = step.Piece;
-
-                    if (step.Piece == Piece.Empty)
-                    {
-                        i--;
-                    }
+                    _screenGrid[step.X, step.Y] = step.Cell;
                 }
             }
         }
@@ -230,7 +225,7 @@ public class PuzzleRenderer : Game
         base.Draw(gameTime);
     }
 
-    private void EnqueueStep((Piece Piece, int X, int Y) move)
+    private void EnqueueStep((Cell cell, int X, int Y) move)
     {
         _stepCount++;
 

@@ -32,7 +32,7 @@ public class Grid
 
             return _cells[Index(x, y)];
         }
-        private set
+        set
         {
             if (! IsInBounds(x, y))
             {

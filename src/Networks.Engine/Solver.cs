@@ -8,7 +8,7 @@ public class Solver
     
     public Action<Grid> StepCallback { get; set; }
     
-    public Action<(Piece Piece, int X, int Y)> DeltaStepCallback { get; init; }
+    public Action<(Cell Cell, int X, int Y)> DeltaStepCallback { private get; init; }
 
     public bool Solve(Grid grid)
     {
