@@ -10,7 +10,7 @@ public class Solver
     
     public Action<Cell, int, int> DeltaStepCallback { private get; init; }
 
-    private readonly Queue<(Point Position, Rotation Rotation)> _queue = [];
+    private readonly Stack<(Point Position, Rotation Rotation)> _stack = [];
 
     public bool Solve(Grid grid)
     {
@@ -18,9 +18,9 @@ public class Solver
         
         AddCellToQueue(grid.PowerSource);
 
-        while (_queue.Count > 0)
+        while (_stack.Count > 0)
         {
-            var move = _queue.Dequeue();
+            var move = _stack.Pop();
 
             var cell = _grid[move.Position];
 
@@ -73,7 +73,7 @@ public class Solver
         
         for (var rotation = 0; rotation < rotations; rotation++)
         {
-            _queue.Enqueue((position, (Rotation) rotation));
+            _stack.Push((position, (Rotation) rotation));
         }
     }
 }
