@@ -68,11 +68,11 @@ public class Solver
                     }
                 }
             }
+
+            _grid[position] = previousState;
+
+            _grid.PropagatePower();
         }
-
-        _grid[position] = previousState;
-
-        _grid.PropagatePower();
 
         visited.Remove(position);
         
