@@ -87,21 +87,7 @@ public class Grid
     {
         return x + y * Width;
     }
-
-    public void Randomise()
-    {
-        for (var y = 0; y < Height; y++)
-        {
-            for (var x = 0; x < Width; x++)
-            {
-                var cell = _cells[Index(x, y)];
-                
-                _cells[Index(x, y)] = new Cell(cell.Piece, (Rotation) _random.Next(4), x == PowerSource.X && y == PowerSource.Y);
-            }
-        }
-        
-        CheckInitialPoweredCells();
-    }
+    
     private void Initialise(Puzzle puzzle)
     {
         Width = puzzle.GridWidth;
@@ -127,6 +113,21 @@ public class Grid
         }
         
         Randomise();
+    }
+
+    private void Randomise()
+    {
+        for (var y = 0; y < Height; y++)
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                var cell = _cells[Index(x, y)];
+                
+                _cells[Index(x, y)] = new Cell(cell.Piece, (Rotation) _random.Next(4), x == PowerSource.X && y == PowerSource.Y);
+            }
+        }
+        
+        CheckInitialPoweredCells();
     }
 
     private void CheckInitialPoweredCells()
