@@ -96,7 +96,7 @@ public class PuzzleRenderer : Game
         {
             _task = new Task(() =>
             {
-                Thread.Sleep(1_000);
+                Thread.Sleep(2_000);
 
                 _stopwatch.Restart();
 
