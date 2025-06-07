@@ -11,15 +11,17 @@ public class Grid
 
     private readonly Random _random = Random.Shared;
 
+    private int Bottom { get; set; }
+
+    private int Right { get; set; }
+
     public int Width { get; private set; }
 
     public int Height { get; private set; }
 
-    public int Bottom { get; private set; }
-
-    public int Right { get; private set; }
-
     public Point PowerSource { get; private set; }
+
+    public bool IsSolved { get; private set; } 
 
     public Cell this[int x, int y]
     {
@@ -107,6 +109,8 @@ public class Grid
 
         var visited = new HashSet<(Point, Direction)>();
 
+        var poweredCount = 1;
+        
         while (queue.Count > 0)
         {
             var move = queue.Dequeue();
@@ -131,6 +135,8 @@ public class Grid
             {
                 this[nextPosition] = new Cell(nextCell.Piece, nextCell.Rotation, true);
 
+                poweredCount++;
+
                 foreach (var nextDirection in nextDirections)
                 {
                     if (nextDirection.Dx == -move.Direction.Dx && nextDirection.Dy == -move.Direction.Dy)
@@ -142,6 +148,8 @@ public class Grid
                 }
             }
         }
+
+        IsSolved = poweredCount == Width * Height;
     }
     
     private Grid()
