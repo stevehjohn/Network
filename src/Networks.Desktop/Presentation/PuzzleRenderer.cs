@@ -26,7 +26,7 @@ public class PuzzleRenderer : Game
 
     private readonly FrameCounter _frameCounter = new();
 
-    private int _skipFrames = 1;
+    private int _skipFrames;
 
     private readonly TileMapper _tileMapper;
 
@@ -96,8 +96,6 @@ public class PuzzleRenderer : Game
         {
             _task = new Task(() =>
             {
-                Thread.Sleep(2_000);
-
                 _stopwatch.Restart();
 
                 try
