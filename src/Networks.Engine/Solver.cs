@@ -18,7 +18,7 @@ public class Solver
     {
         _grid = grid;
         
-        AddCellToQueue(grid.PowerSource);
+        AddCellToStack(grid.PowerSource);
 
         while (_stack.Count > 0)
         {
@@ -53,7 +53,7 @@ public class Solver
 
                 if (nextDirections.Contains(new Direction(-direction.Dx, -direction.Dy)))
                 {
-                    AddCellToQueue(nextPosition);
+                    AddCellToStack(nextPosition);
                 }
 
                 _grid[move.Position] = previousState;
@@ -63,7 +63,7 @@ public class Solver
         return false;
     }
 
-    private void AddCellToQueue(Point position)
+    private void AddCellToStack(Point position)
     {
         var x = position.X;
 
