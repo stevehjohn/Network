@@ -172,7 +172,7 @@ public class Grid
 
             var nextDirections = Connector.Connections[(nextCell.Piece, nextCell.Rotation)];
 
-            if (nextDirections.Contains(new Direction(-move.Direction.Dx, move.Direction.Dy)))
+            if (nextDirections.Contains(new Direction(-move.Direction.Dx, -move.Direction.Dy)))
             {
                 this[nextPosition] = new Cell(nextCell.Piece, nextCell.Rotation, true);
 
