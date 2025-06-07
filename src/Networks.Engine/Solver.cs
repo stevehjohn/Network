@@ -32,23 +32,23 @@ public class Solver
 
         for (var rotation = 0; rotation < rotations; rotation++)
         {
+            var newCell = new Cell(cell.Piece, (Rotation) rotation, true);
+                
+            _grid[position] = newCell;
+                
+            _grid.PropagatePower();
+                    
+            StepCallback?.Invoke(_grid);
+
+            if (_grid.IsSolved)
+            {
+                return true;
+            }
+
             var directions = Connector.Connections[(cell.Piece, (Rotation) rotation)];
 
             foreach (var direction in directions)
             {
-                var newCell = new Cell(cell.Piece, (Rotation) rotation, true);
-                
-                _grid[position] = newCell;
-                
-                _grid.PropagatePower();
-                    
-                StepCallback?.Invoke(_grid);
-
-                if (_grid.IsSolved)
-                {
-                    return true;
-                }
-
                 var nextPosition = position + direction;
 
                 var nextCell = _grid[nextPosition];
