@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Networks.Console.Infrastructure;
+using Networks.Engine;
 using Networks.Engine.Board;
 using Networks.Engine.Infrastructure;
 using static System.Console;
@@ -18,10 +19,10 @@ public class Remote
     {
         var client = new PuzzleClient();
 
-        // var solver = new Solver
-        // {
-        //     StepCallback = VisualiseStep
-        // };
+        var solver = new Solver
+        {
+            StepCallback = VisualiseStep
+        };
 
         Clear();
 
@@ -99,20 +100,20 @@ public class Remote
 
             CursorVisible = false;
 
-            // var result = solver.Solve(puzzle.Value.Grid);
+            var result = solver.Solve(puzzle.Value.Grid);
 
             CursorVisible = true;
 
             _stopwatch.Stop();
             
-            // if (! result)
-            // {
-            //     WriteLine("Unable to solve the puzzle.");
-            //
-            //     WriteLine();
-            //
-            //     break;
-            // }
+            if (! result)
+            {
+                WriteLine("Unable to solve the puzzle.");
+            
+                WriteLine();
+            
+                break;
+            }
 
             CursorTop = _top;
 
