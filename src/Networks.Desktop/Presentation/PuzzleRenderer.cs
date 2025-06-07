@@ -51,6 +51,8 @@ public class PuzzleRenderer : Game
 
     private KeyboardState _previousKeyboardState;
 
+    private bool _dequeue;
+
     public Grid Grid { get; set; }
 
     public PuzzleRenderer()
@@ -117,6 +119,8 @@ public class PuzzleRenderer : Game
 
         var keyboardState = Keyboard.GetState();
 
+        _dequeue = _previousKeyboardState.IsKeyDown(Keys.Space) && keyboardState.IsKeyUp(Keys.Space);
+
         if (_previousKeyboardState.IsKeyDown(Keys.Right) && keyboardState.IsKeyUp(Keys.Right))
         {
             if (_skipFrames == 0)
@@ -153,7 +157,7 @@ public class PuzzleRenderer : Game
         {
             if (_skipFrames == 0)
             {
-                if (_previousKeyboardState.IsKeyDown(Keys.Space) && Keyboard.GetState().IsKeyUp(Keys.Space))
+                if (_dequeue)
                 {
                     if (_changeQueue.TryDequeue(out var grid))
                     {
