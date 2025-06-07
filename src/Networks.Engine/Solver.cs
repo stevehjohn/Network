@@ -16,12 +16,12 @@ public class Solver
     {
         _grid = grid;
 
-        ProcessPosition(_grid.PowerSource);
+        var result = ProcessPosition(_grid.PowerSource);
         
-        return false;
+        return result;
     }
 
-    private void ProcessPosition(Point position)
+    private bool ProcessPosition(Point position)
     {
         var cell = _grid[position];
 
@@ -49,7 +49,12 @@ public class Solver
                 StepCallback?.Invoke(_grid);
 
                 DeltaStepCallback?.Invoke(newCell, position.X, position.Y);
-                
+
+                if (_grid.IsSolved)
+                {
+                    return true;
+                }
+
                 var nextPosition = position + direction;
 
                 var nextCell = _grid[nextPosition];
@@ -71,5 +76,7 @@ public class Solver
                 _grid.PropagatePower();
             }
         }
+
+        return false;
     }
 }
