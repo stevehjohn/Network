@@ -8,8 +8,6 @@ public class Solver
     
     public Action<Grid> StepCallback { get; init; }
     
-    public Action<Cell, int, int> DeltaStepCallback { private get; init; }
-
     private readonly HashSet<(Point, Rotation)> _visited = [];
 
     public bool Solve(Grid grid)
@@ -47,8 +45,6 @@ public class Solver
                 _grid.PropagatePower();
                     
                 StepCallback?.Invoke(_grid);
-
-                DeltaStepCallback?.Invoke(newCell, position.X, position.Y);
 
                 if (_grid.IsSolved)
                 {
