@@ -62,7 +62,7 @@ public class Solver
 
                 if (nextDirections.Contains(new Direction(-direction.Dx, -direction.Dy)))
                 {
-                    if (ProcessPosition(nextPosition, [..visited]))
+                    if (ProcessPosition(nextPosition, visited))
                     {
                         return true;
                     }
