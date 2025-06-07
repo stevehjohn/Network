@@ -36,10 +36,10 @@ public class Solver
             
             var directions = Connector.Connections[(cell.Piece, (Rotation) rotation)];
 
+            var previousState = _grid[position];
+
             foreach (var direction in directions)
             {
-                var previousState = _grid[position];
-
                 var newCell = new Cell(cell.Piece, (Rotation) rotation, true);
                 
                 _grid[position] = newCell;
