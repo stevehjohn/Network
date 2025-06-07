@@ -49,7 +49,7 @@ public class PuzzleRenderer : Game
 
     private Task _task;
 
-    private KeyboardState? _previousKeyboardState = new KeyboardState();
+    private KeyboardState _previousKeyboardState;
 
     public Grid Grid { get; set; }
 
@@ -87,7 +87,7 @@ public class PuzzleRenderer : Game
 
         _smallFont = Content.Load<SpriteFont>("small-font");
     }
-    
+
     protected override void Update(GameTime gameTime)
     {
         _frameCounter.Update((float) gameTime.ElapsedGameTime.TotalSeconds);
@@ -119,21 +119,18 @@ public class PuzzleRenderer : Game
 
         var keyboardState = Keyboard.GetState();
 
-        if (_previousKeyboardState != null)
+        if (_previousKeyboardState.IsKeyDown(Keys.Right) && keyboardState.IsKeyUp(Keys.Right))
         {
-            if (_previousKeyboardState.Value.IsKeyDown(Keys.Right) && keyboardState.IsKeyUp(Keys.Right))
-            {
-                _skipFrames *= 2;
+            _skipFrames *= 2;
 
-                _skipFrames = Math.Min(_skipFrames, 1_000_000);
-            }
+            _skipFrames = Math.Min(_skipFrames, 1_000_000);
+        }
 
-            if (_previousKeyboardState.Value.IsKeyDown(Keys.Left) && keyboardState.IsKeyUp(Keys.Left))
-            {
-                _skipFrames /= 2;
+        if (_previousKeyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyUp(Keys.Left))
+        {
+            _skipFrames /= 2;
 
-                _skipFrames = Math.Max(_skipFrames, 1);
-            }
+            _skipFrames = Math.Max(_skipFrames, 1);
         }
 
         _previousKeyboardState = keyboardState;
@@ -149,13 +146,28 @@ public class PuzzleRenderer : Game
 
         if (! _changeQueue.IsEmpty)
         {
-            for (var i = 0; i < _skipFrames; i++)
+            if (_skipFrames == 0)
             {
-                if (_changeQueue.TryDequeue(out var grid))
+                if (_previousKeyboardState.IsKeyDown(Keys.Space) && Keyboard.GetState().IsKeyUp(Keys.Space))
                 {
-                    _frameCount++;
+                    if (_changeQueue.TryDequeue(out var grid))
+                    {
+                        _frameCount++;
 
-                    Grid = grid;
+                        Grid = grid;
+                    }
+                }
+            }
+            else
+            {
+                for (var i = 0; i < _skipFrames; i++)
+                {
+                    if (_changeQueue.TryDequeue(out var grid))
+                    {
+                        _frameCount++;
+
+                        Grid = grid;
+                    }
                 }
             }
         }
@@ -176,14 +188,14 @@ public class PuzzleRenderer : Game
             for (var x = 0; x < Grid.Width; x++)
             {
                 var cell = Grid[x, y];
-                
+
                 var tile = _tileMapper.GetTile(cell);
 
                 var isometricX = (x - y) * Constants.TileWidth / 2 + originX;
 
                 var isometricY = (x + y) * Constants.TileCentre + originY;
 
-                var colour = x == Grid.PowerSource.X && y == Grid.PowerSource.Y ? Color.OrangeRed : 
+                var colour = x == Grid.PowerSource.X && y == Grid.PowerSource.Y ? Color.OrangeRed :
                     cell.IsPowered ? Color.Orange : Color.White;
 
                 _spriteBatch.Draw(tile, new Rectangle(isometricX, isometricY, Constants.TileWidth, Constants.TileHeight),
