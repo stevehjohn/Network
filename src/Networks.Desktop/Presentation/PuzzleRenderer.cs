@@ -20,7 +20,7 @@ public class PuzzleRenderer : Game
 
     private readonly Solver _solver;
 
-    private readonly ConcurrentQueue<(Cell Cell, int X, int Y)> _changeQueue = [];
+    private readonly ConcurrentQueue<Grid> _changeQueue = [];
 
     private readonly Stopwatch _stopwatch = new();
 
@@ -49,21 +49,9 @@ public class PuzzleRenderer : Game
 
     private Task _task;
 
-    private Grid _grid;
-
-    private Grid _screenGrid;
-
     private KeyboardState? _previousKeyboardState = new KeyboardState();
 
-    public Grid Grid
-    {
-        private get => _grid;
-        set
-        {
-            _grid = value;
-            _screenGrid = _grid!.Clone();
-        }
-    }
+    public Grid Grid { get; set; }
 
     public PuzzleRenderer()
     {
@@ -85,7 +73,7 @@ public class PuzzleRenderer : Game
 
         _solver = new Solver
         {
-            DeltaStepCallback = EnqueueStep
+            StepCallback = EnqueueStep
         };
     }
 
@@ -163,11 +151,11 @@ public class PuzzleRenderer : Game
         {
             for (var i = 0; i < _skipFrames; i++)
             {
-                if (_changeQueue.TryDequeue(out var step))
+                if (_changeQueue.TryDequeue(out var grid))
                 {
                     _frameCount++;
 
-                    _screenGrid[step.X, step.Y] = step.Cell;
+                    Grid = grid;
                 }
             }
         }
@@ -187,7 +175,7 @@ public class PuzzleRenderer : Game
         {
             for (var x = 0; x < Grid.Width; x++)
             {
-                var cell = _screenGrid[x, y];
+                var cell = Grid[x, y];
                 
                 var tile = _tileMapper.GetTile(cell);
 
@@ -228,10 +216,10 @@ public class PuzzleRenderer : Game
         base.Draw(gameTime);
     }
 
-    private void EnqueueStep(Cell cell, int x, int y)
+    private void EnqueueStep(Grid grid)
     {
         _stepCount++;
 
-        _changeQueue.Enqueue((cell, x, y));
+        _changeQueue.Enqueue(grid);
     }
 }
