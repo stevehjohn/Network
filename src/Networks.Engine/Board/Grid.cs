@@ -148,13 +148,13 @@ public class Grid
             queue.Enqueue((PowerSource, direction));
         }
 
-        var visited = new HashSet<Point>();
+        var visited = new HashSet<(Point, Direction)>();
 
         while (queue.Count > 0)
         {
             var move = queue.Dequeue();
 
-            if (! visited.Add(move.Position))
+            if (! visited.Add((move.Position, move.Direction)))
             {
                 continue;
             }
