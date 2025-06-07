@@ -98,8 +98,6 @@ public class PuzzleRenderer : Game
         {
             _task = new Task(() =>
             {
-                _stopwatch.Restart();
-
                 try
                 {
                     _solver.Solve(Grid);
@@ -126,6 +124,8 @@ public class PuzzleRenderer : Game
             if (_skipFrames == 0)
             {
                 _skipFrames = 1;
+                
+                _stopwatch.Start();
             }
             else
             {
@@ -140,6 +140,11 @@ public class PuzzleRenderer : Game
             _skipFrames /= 2;
 
             _skipFrames = Math.Max(_skipFrames, 0);
+
+            if (_skipFrames == 0)
+            {
+                _stopwatch.Stop();
+            }
         }
 
         _previousKeyboardState = keyboardState;
