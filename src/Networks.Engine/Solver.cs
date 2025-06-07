@@ -28,11 +28,11 @@ public class Solver
 
         var rotations = cell.Piece == Piece.Straight ? 2 : 4;
         
+        var previousState = _grid[position];
+
         for (var rotation = 0; rotation < rotations; rotation++)
         {
             var directions = Connector.Connections[(cell.Piece, (Rotation) rotation)];
-
-            var previousState = _grid[position];
 
             foreach (var direction in directions)
             {
@@ -68,12 +68,14 @@ public class Solver
                     }
                 }
             }
-
-            _grid[position] = previousState;
-
-            _grid.PropagatePower();
         }
 
+        _grid[position] = previousState;
+
+        _grid.PropagatePower();
+
+        visited.Remove(position);
+        
         return false;
     }
 }
