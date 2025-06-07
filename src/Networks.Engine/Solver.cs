@@ -12,6 +12,8 @@ public class Solver
 
     private readonly Stack<(Point Position, Rotation Rotation)> _stack = [];
 
+    private readonly HashSet<(Point, Rotation)> _visited = [];
+
     public bool Solve(Grid grid)
     {
         _grid = grid;
@@ -73,7 +75,10 @@ public class Solver
         
         for (var rotation = 0; rotation < rotations; rotation++)
         {
-            _stack.Push((position, (Rotation) rotation));
+            if (! _visited.Add((position, (Rotation) rotation)))
+            {
+                _stack.Push((position, (Rotation) rotation));
+            }
         }
     }
 }
