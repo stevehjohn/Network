@@ -17,7 +17,7 @@ public class Solver
         return result;
     }
 
-    private bool ProcessPosition(Point position, HashSet<(Point, Rotation)> visited)
+    private bool ProcessPosition(Point position, HashSet<(Point, Rotation, Direction)> visited)
     {
         var cell = _grid[position];
 
@@ -25,17 +25,17 @@ public class Solver
         
         for (var rotation = 0; rotation < rotations; rotation++)
         {
-            if (! visited.Add((position, (Rotation) rotation)))
-            {
-                continue;
-            }
-            
             var directions = Connector.Connections[(cell.Piece, (Rotation) rotation)];
 
             var previousState = _grid[position];
 
             foreach (var direction in directions)
             {
+                if (! visited.Add((position, (Rotation) rotation, direction)))
+                {
+                    continue;
+                }
+            
                 var newCell = new Cell(cell.Piece, (Rotation) rotation, true);
                 
                 _grid[position] = newCell;
