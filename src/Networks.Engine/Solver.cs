@@ -6,20 +6,58 @@ public class Solver
 {
     private Grid _grid;
     
-    public Action<Grid> StepCallback { get; set; }
+    public Action<Grid> StepCallback { get; init; }
     
-    public Action<(Cell Cell, int X, int Y)> DeltaStepCallback { private get; init; }
+    public Action<Cell, int, int> DeltaStepCallback { private get; init; }
+
+    private readonly Queue<(Point Position, Rotation Rotation)> _queue = [];
 
     public bool Solve(Grid grid)
     {
         _grid = grid;
         
-        var result = ProcessCell(grid.PowerSource);
+        AddCellToQueue(grid.PowerSource);
+
+        while (_queue.Count > 0)
+        {
+            var move = _queue.Dequeue();
+
+            var cell = _grid[move.Position];
+
+            var directions = Connector.Connections[(cell.Piece, move.Rotation)];
+
+            foreach (var direction in directions)
+            {
+                var nextPosition = move.Position + direction;
+
+                var nextCell = _grid[nextPosition];
+
+                if (nextCell.Piece == Piece.OutOfBounds)
+                {
+                    continue;
+                }
+
+                var nextDirections = Connector.Connections[(nextCell.Piece, nextCell.Rotation)];
+
+                if (nextDirections.Contains(new Direction(-direction.Dx, -direction.Dy)))
+                {
+                    AddCellToQueue(nextPosition);
+
+                    var newCell = new Cell(nextCell.Piece, nextCell.Rotation, true);
+
+                    _grid[nextPosition] = newCell;
+                    
+                    StepCallback?.Invoke(_grid);
+                    
+                    DeltaStepCallback?.Invoke(newCell, nextPosition.X, nextPosition.Y);
+                }
+            }
+        }
         
-        return result;
+        return false;
     }
 
-    private bool ProcessCell(Point position)
+    private void AddCellToQueue(Point position)
     {
         var x = position.X;
 
@@ -27,12 +65,11 @@ public class Solver
         
         var cell = _grid[x, y];
 
-        var directions = cell.Piece == Piece.Straight ? 2 : 4;
+        var rotations = cell.Piece == Piece.Straight ? 2 : 4;
         
-        for (var direction = 0; direction < directions; direction++)
+        for (var rotation = 0; rotation < rotations; rotation++)
         {
+            _queue.Enqueue((position, (Rotation) rotation));
         }
-
-        return false;
     }
 }

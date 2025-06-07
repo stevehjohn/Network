@@ -235,10 +235,10 @@ public class PuzzleRenderer : Game
         base.Draw(gameTime);
     }
 
-    private void EnqueueStep((Cell cell, int X, int Y) move)
+    private void EnqueueStep(Cell cell, int x, int y)
     {
         _stepCount++;
 
-        _changeQueue.Enqueue(move);
+        _changeQueue.Enqueue((cell, x, y));
     }
 }
