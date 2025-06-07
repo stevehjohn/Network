@@ -77,8 +77,10 @@ public class Solver
         {
             if (! _visited.Add((position, (Rotation) rotation)))
             {
-                _stack.Push((position, (Rotation) rotation));
+                continue;
             }
+
+            _stack.Push((position, (Rotation) rotation));
         }
     }
 }
