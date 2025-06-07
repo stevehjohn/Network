@@ -47,6 +47,8 @@ public class Solver
 
             var directions = Connector.Connections[(cell.Piece, (Rotation) rotation)];
 
+            var solved = true;
+
             foreach (var direction in directions)
             {
                 var nextPosition = position + direction;
@@ -62,11 +64,13 @@ public class Solver
 
                 if (nextDirections.Contains(new Direction(-direction.Dx, -direction.Dy)))
                 {
-                    if (ProcessPosition(nextPosition, visited))
-                    {
-                        return true;
-                    }
+                    solved &= ProcessPosition(nextPosition, visited);
                 }
+            }
+
+            if (solved)
+            {
+                return true;
             }
 
             _grid[position] = previousState;
