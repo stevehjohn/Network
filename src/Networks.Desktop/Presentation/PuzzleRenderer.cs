@@ -53,7 +53,7 @@ public class PuzzleRenderer : Game
 
     private Grid _screenGrid;
 
-    private KeyboardState? _previousKeyboardState;
+    private KeyboardState? _previousKeyboardState = new KeyboardState();
 
     public Grid Grid
     {
@@ -99,12 +99,12 @@ public class PuzzleRenderer : Game
 
         _smallFont = Content.Load<SpriteFont>("small-font");
     }
-
+    
     protected override void Update(GameTime gameTime)
     {
         _frameCounter.Update((float) gameTime.ElapsedGameTime.TotalSeconds);
 
-        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        if (Keyboard.GetState().IsKeyUp(Keys.Space) && _previousKeyboardState.Value.IsKeyDown(Keys.Space))
         {
             Grid.Randomise();
             
