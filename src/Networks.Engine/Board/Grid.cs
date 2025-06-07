@@ -79,59 +79,21 @@ public class Grid
         return clone;
     }
 
-    private Grid()
+    public void PropagatePower()
     {
-    }
-
-    private int Index(int x, int y)
-    {
-        return x + y * Width;
-    }
-    
-    private void Initialise(Puzzle puzzle)
-    {
-        Width = puzzle.GridWidth;
-
-        Height = puzzle.GridHeight;
-
-        Right = Width - 1;
-
-        Bottom = Height - 1;
-
-        _cells = new Cell[Width * Height];
-
-        PowerSource = new Point(puzzle.Data.PowerCell % Width, puzzle.Data.PowerCell / Width);
-
-        for (var y = 0; y < Height; y++)
+        for (var x = 0; x < Width; x++)
         {
-            for (var x = 0; x < Width; x++)
+            for (var y = 0; y < Height; y++)
             {
-                var powered = x == PowerSource.X && y == PowerSource.Y;
-                
-                _cells[Index(x, y)] = new Cell(puzzle.Data.GridLayout[x + y * Width], Rotation.Zero, powered);
+                if (x == PowerSource.X && y == PowerSource.Y)
+                {
+                    continue;
+                }
+
+                _cells[x + y * Width] = new Cell(this[x, y].Piece, this[x, y].Rotation, false);
             }
         }
-        
-        Randomise();
-    }
 
-    private void Randomise()
-    {
-        for (var y = 0; y < Height; y++)
-        {
-            for (var x = 0; x < Width; x++)
-            {
-                var cell = _cells[Index(x, y)];
-                
-                _cells[Index(x, y)] = new Cell(cell.Piece, (Rotation) _random.Next(4), x == PowerSource.X && y == PowerSource.Y);
-            }
-        }
-        
-        CheckInitialPoweredCells();
-    }
-
-    private void CheckInitialPoweredCells()
-    {
         var queue = new Queue<(Point Position, Direction Direction)>();
 
         var cell = this[PowerSource];
@@ -180,6 +142,57 @@ public class Grid
                 }
             }
         }
+    }
+    
+    private Grid()
+    {
+    }
+
+    private int Index(int x, int y)
+    {
+        return x + y * Width;
+    }
+    
+    private void Initialise(Puzzle puzzle)
+    {
+        Width = puzzle.GridWidth;
+
+        Height = puzzle.GridHeight;
+
+        Right = Width - 1;
+
+        Bottom = Height - 1;
+
+        _cells = new Cell[Width * Height];
+
+        PowerSource = new Point(puzzle.Data.PowerCell % Width, puzzle.Data.PowerCell / Width);
+
+        for (var y = 0; y < Height; y++)
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                var powered = x == PowerSource.X && y == PowerSource.Y;
+                
+                _cells[Index(x, y)] = new Cell(puzzle.Data.GridLayout[x + y * Width], Rotation.Zero, powered);
+            }
+        }
+        
+        Randomise();
+    }
+
+    private void Randomise()
+    {
+        for (var y = 0; y < Height; y++)
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                var cell = _cells[Index(x, y)];
+                
+                _cells[Index(x, y)] = new Cell(cell.Piece, (Rotation) _random.Next(4), x == PowerSource.X && y == PowerSource.Y);
+            }
+        }
+        
+        PropagatePower();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

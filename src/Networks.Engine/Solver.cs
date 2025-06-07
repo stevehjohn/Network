@@ -43,6 +43,8 @@ public class Solver
                 var newCell = new Cell(cell.Piece, (Rotation) rotation, true);
                 
                 _grid[position] = newCell;
+                
+                _grid.PropagatePower();
                     
                 StepCallback?.Invoke(_grid);
 
@@ -65,6 +67,8 @@ public class Solver
                 }
 
                 _grid[position] = previousState;
+
+                _grid.PropagatePower();
             }
         }
     }
