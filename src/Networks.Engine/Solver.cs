@@ -64,13 +64,16 @@ public class Solver
 
                 if (nextDirections.Contains(new Direction(-direction.Dx, -direction.Dy)))
                 {
-                    ProcessPosition(nextPosition);
+                    if (ProcessPosition(nextPosition))
+                    {
+                        return true;
+                    }
                 }
-
-                _grid[position] = previousState;
-
-                _grid.PropagatePower();
             }
+
+            _grid[position] = previousState;
+
+            _grid.PropagatePower();
         }
 
         return false;
