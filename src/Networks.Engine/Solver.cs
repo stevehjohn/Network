@@ -17,8 +17,13 @@ public class Solver
         return result;
     }
 
-    private bool ProcessPosition(Point position, HashSet<(Point, Rotation, Direction)> visited)
+    private bool ProcessPosition(Point position, HashSet<Point> visited)
     {
+        if (! visited.Add(position))
+        {
+            return false;
+        }
+            
         var cell = _grid[position];
 
         var rotations = cell.Piece == Piece.Straight ? 2 : 4;
@@ -31,11 +36,6 @@ public class Solver
 
             foreach (var direction in directions)
             {
-                if (! visited.Add((position, (Rotation) rotation, direction)))
-                {
-                    continue;
-                }
-            
                 var newCell = new Cell(cell.Piece, (Rotation) rotation, true);
                 
                 _grid[position] = newCell;
