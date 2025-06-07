@@ -8,18 +8,16 @@ public class Solver
     
     public Action<Grid> StepCallback { get; init; }
     
-    private readonly HashSet<(Point, Rotation)> _visited = [];
-
     public bool Solve(Grid grid)
     {
         _grid = grid;
 
-        var result = ProcessPosition(_grid.PowerSource);
+        var result = ProcessPosition(_grid.PowerSource, []);
         
         return result;
     }
 
-    private bool ProcessPosition(Point position)
+    private bool ProcessPosition(Point position, HashSet<(Point, Rotation)> visited)
     {
         var cell = _grid[position];
 
@@ -27,7 +25,7 @@ public class Solver
         
         for (var rotation = 0; rotation < rotations; rotation++)
         {
-            if (! _visited.Add((position, (Rotation) rotation)))
+            if (! visited.Add((position, (Rotation) rotation)))
             {
                 continue;
             }
@@ -64,7 +62,7 @@ public class Solver
 
                 if (nextDirections.Contains(new Direction(-direction.Dx, -direction.Dy)))
                 {
-                    if (ProcessPosition(nextPosition))
+                    if (ProcessPosition(nextPosition, [..visited]))
                     {
                         return true;
                     }
