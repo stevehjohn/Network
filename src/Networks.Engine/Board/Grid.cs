@@ -54,11 +54,6 @@ public class Grid
         Initialise(puzzle);
     }
 
-    public void SetRotation(int x, int y, Rotation rotation)
-    {
-        _cells[Index(x, y)] = new Cell(_cells[Index(x, y)].Piece, rotation, false);
-    }
-
     public Grid Clone()
     {
         var clone = new Grid
@@ -93,6 +88,20 @@ public class Grid
         return x + y * Width;
     }
 
+    public void Randomise()
+    {
+        for (var y = 0; y < Height; y++)
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                var cell = _cells[Index(x, y)];
+                
+                _cells[Index(x, y)] = new Cell(cell.Piece, (Rotation) _random.Next(4), x == PowerSource.X && y == PowerSource.Y);
+            }
+        }
+        
+        CheckInitialPoweredCells();
+    }
     private void Initialise(Puzzle puzzle)
     {
         Width = puzzle.GridWidth;
@@ -118,21 +127,6 @@ public class Grid
         }
         
         Randomise();
-    }
-
-    public void Randomise()
-    {
-        for (var y = 0; y < Height; y++)
-        {
-            for (var x = 0; x < Width; x++)
-            {
-                var cell = _cells[Index(x, y)];
-                
-                _cells[Index(x, y)] = new Cell(cell.Piece, (Rotation) _random.Next(4), x == PowerSource.X && y == PowerSource.Y);
-            }
-        }
-        
-        CheckInitialPoweredCells();
     }
 
     private void CheckInitialPoweredCells()
