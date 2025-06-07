@@ -220,6 +220,6 @@ public class PuzzleRenderer : Game
     {
         _stepCount++;
 
-        _changeQueue.Enqueue(grid);
+        _changeQueue.Enqueue(grid.Clone());
     }
 }
