@@ -38,6 +38,8 @@ public class PuzzleManager
 
         var grids = new List<Grid>();
 
+        puzzles = [puzzles[1]];
+
         foreach (var puzzle in puzzles)
         {
             var grid = new Grid(puzzle);
