@@ -28,6 +28,16 @@ public class Solver
 
             foreach (var direction in directions)
             {
+                var previousState = _grid[move.Position];
+
+                var newCell = new Cell(cell.Piece, move.Rotation, true);
+                
+                _grid[move.Position] = newCell;
+                    
+                StepCallback?.Invoke(_grid);
+                    
+                DeltaStepCallback?.Invoke(newCell, move.Position.X, move.Position.Y);
+                
                 var nextPosition = move.Position + direction;
 
                 var nextCell = _grid[nextPosition];
@@ -42,15 +52,9 @@ public class Solver
                 if (nextDirections.Contains(new Direction(-direction.Dx, -direction.Dy)))
                 {
                     AddCellToQueue(nextPosition);
-
-                    var newCell = new Cell(nextCell.Piece, nextCell.Rotation, true);
-
-                    _grid[nextPosition] = newCell;
-                    
-                    StepCallback?.Invoke(_grid);
-                    
-                    DeltaStepCallback?.Invoke(newCell, nextPosition.X, nextPosition.Y);
                 }
+
+                _grid[move.Position] = previousState;
             }
         }
         
