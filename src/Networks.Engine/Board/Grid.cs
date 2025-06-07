@@ -117,12 +117,10 @@ public class Grid
             }
         }
         
-        //Randomise();
-        
-        CheckInitialPoweredCells();
+        Randomise();
     }
 
-    private void Randomise()
+    public void Randomise()
     {
         for (var y = 0; y < Height; y++)
         {
@@ -130,7 +128,7 @@ public class Grid
             {
                 var cell = _cells[Index(x, y)];
                 
-                _cells[Index(x, y)] = new Cell(cell.Piece, (Rotation) _random.Next(4), cell.IsPowered);
+                _cells[Index(x, y)] = new Cell(cell.Piece, (Rotation) _random.Next(4), x == PowerSource.X && y == PowerSource.Y);
             }
         }
         

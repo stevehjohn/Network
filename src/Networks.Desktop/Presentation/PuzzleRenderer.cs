@@ -104,6 +104,13 @@ public class PuzzleRenderer : Game
     {
         _frameCounter.Update((float) gameTime.ElapsedGameTime.TotalSeconds);
 
+        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        {
+            Grid.Randomise();
+            
+            _screenGrid.Randomise();
+        }
+
         if (! _isSolving)
         {
             _task = new Task(() =>
