@@ -121,8 +121,15 @@ public class PuzzleRenderer : Game
 
         if (_previousKeyboardState.IsKeyDown(Keys.Right) && keyboardState.IsKeyUp(Keys.Right))
         {
-            _skipFrames *= 2;
-
+            if (_skipFrames == 0)
+            {
+                _skipFrames = 1;
+            }
+            else
+            {
+                _skipFrames *= 2;
+            }
+            
             _skipFrames = Math.Min(_skipFrames, 1_000_000);
         }
 
@@ -130,7 +137,7 @@ public class PuzzleRenderer : Game
         {
             _skipFrames /= 2;
 
-            _skipFrames = Math.Max(_skipFrames, 1);
+            _skipFrames = Math.Max(_skipFrames, 0);
         }
 
         _previousKeyboardState = keyboardState;
