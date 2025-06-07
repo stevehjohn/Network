@@ -10,37 +10,45 @@ public class Solver
     
     public Action<Cell, int, int> DeltaStepCallback { private get; init; }
 
-    private readonly Stack<(Point Position, Rotation Rotation)> _stack = [];
-
     private readonly HashSet<(Point, Rotation)> _visited = [];
 
     public bool Solve(Grid grid)
     {
         _grid = grid;
+
+        ProcessPosition(_grid.PowerSource);
         
-        AddCellToStack(grid.PowerSource);
+        return false;
+    }
 
-        while (_stack.Count > 0)
+    private void ProcessPosition(Point position)
+    {
+        var cell = _grid[position];
+
+        var rotations = cell.Piece == Piece.Straight ? 2 : 4;
+        
+        for (var rotation = 0; rotation < rotations; rotation++)
         {
-            var move = _stack.Pop();
-
-            var cell = _grid[move.Position];
-
-            var directions = Connector.Connections[(cell.Piece, move.Rotation)];
+            if (! _visited.Add((position, (Rotation) rotation)))
+            {
+                continue;
+            }
+            
+            var directions = Connector.Connections[(cell.Piece, (Rotation) rotation)];
 
             foreach (var direction in directions)
             {
-                var previousState = _grid[move.Position];
+                var previousState = _grid[position];
 
-                var newCell = new Cell(cell.Piece, move.Rotation, true);
+                var newCell = new Cell(cell.Piece, (Rotation) rotation, true);
                 
-                _grid[move.Position] = newCell;
+                _grid[position] = newCell;
                     
                 StepCallback?.Invoke(_grid);
-                    
-                DeltaStepCallback?.Invoke(newCell, move.Position.X, move.Position.Y);
+
+                DeltaStepCallback?.Invoke(newCell, position.X, position.Y);
                 
-                var nextPosition = move.Position + direction;
+                var nextPosition = position + direction;
 
                 var nextCell = _grid[nextPosition];
 
@@ -53,34 +61,11 @@ public class Solver
 
                 if (nextDirections.Contains(new Direction(-direction.Dx, -direction.Dy)))
                 {
-                    AddCellToStack(nextPosition);
+                    ProcessPosition(nextPosition);
                 }
 
-                _grid[move.Position] = previousState;
+                _grid[position] = previousState;
             }
-        }
-        
-        return false;
-    }
-
-    private void AddCellToStack(Point position)
-    {
-        var x = position.X;
-
-        var y = position.Y;
-        
-        var cell = _grid[x, y];
-
-        var rotations = cell.Piece == Piece.Straight ? 2 : 4;
-        
-        for (var rotation = 0; rotation < rotations; rotation++)
-        {
-            if (! _visited.Add((position, (Rotation) rotation)))
-            {
-                continue;
-            }
-
-            _stack.Push((position, (Rotation) rotation));
         }
     }
 }
