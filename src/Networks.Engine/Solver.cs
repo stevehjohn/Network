@@ -1,3 +1,4 @@
+using System.Net.Security;
 using Networks.Engine.Board;
 
 namespace Networks.Engine;
@@ -47,6 +48,8 @@ public class Solver
 
             var directions = Connector.Connections[(cell.Piece, (Rotation) rotation)];
 
+            var valid = true;
+            
             foreach (var direction in directions)
             {
                 var nextPosition = position + direction;
@@ -62,11 +65,13 @@ public class Solver
 
                 if (nextDirections.Contains(new Direction(-direction.Dx, -direction.Dy)))
                 {
-                    if (ProcessPosition(nextPosition, visited))
-                    {
-                        return true;
-                    }
+                    valid &= ProcessPosition(nextPosition, visited);
                 }
+            }
+
+            if (valid && _grid.IsSolved)
+            {
+                return true;
             }
 
             _grid[position] = previousState;
