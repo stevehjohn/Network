@@ -63,9 +63,12 @@ public class Solver
 
                 var nextDirections = Connector.Connections[(nextCell.Piece, nextCell.Rotation)];
 
-                if (nextDirections.Contains(new Direction(-direction.Dx, -direction.Dy)))
+                foreach (var nextDirection in nextDirections)
                 {
-                    valid &= ProcessPosition(nextPosition, visited);
+                    if (nextDirection == new Direction(-direction.Dx, -direction.Dy))
+                    {
+                        valid &= ProcessPosition(nextPosition, visited);
+                    }
                 }
             }
 
