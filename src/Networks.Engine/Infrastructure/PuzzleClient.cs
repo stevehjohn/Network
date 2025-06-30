@@ -147,7 +147,7 @@ public sealed class PuzzleClient : IDisposable
         
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
         
-        using var response = _client.PostAsync("api/network/submit", content).Result;
+        using var response = _client.PostAsync("user/puzzlecomplete", content).Result;
 
         return response.StatusCode;
     }
