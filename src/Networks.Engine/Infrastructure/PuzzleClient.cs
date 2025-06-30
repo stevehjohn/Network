@@ -118,7 +118,17 @@ public sealed class PuzzleClient : IDisposable
         var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         var score = grid.Width * grid.Height * 5;
+        
+        var builder = new StringBuilder(grid.Width * grid.Height);
 
+        for (var y = 0; y < grid.Height; y++)
+        {
+            for (var x = 0; x < grid.Width; x++)
+            {
+                builder.Append((int) grid[x, y].Rotation);
+            }
+        }
+        
         var payload = new PuzzleSolution
         {
             Type = 25,
@@ -127,7 +137,7 @@ public sealed class PuzzleClient : IDisposable
             Month = date.Month,
             Day = date.Day,
             Score = score,
-            //Solution = builder.ToString(),
+            Solution = builder.ToString(),
             UserId = _userId,
             Status = "PENDING",
             CreatedAt = timestamp
