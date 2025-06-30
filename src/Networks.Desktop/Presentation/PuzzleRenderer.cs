@@ -99,7 +99,7 @@ public class PuzzleRenderer : Game
             {
                 try
                 {
-                    _solver.Solve(Grid);
+                    _solver.Solve(Grid.Clone());
                 }
                 catch (Exception exception)
                 {
