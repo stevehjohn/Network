@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Net;
 using Networks.Console.Infrastructure;
 using Networks.Engine;
 using Networks.Engine.Board;
@@ -127,45 +128,45 @@ public class Remote
 
             WriteLine();
 
-            // for (var retry = 1; retry < 21; retry++)
-            // {
-            //     var statusCode = client.SendResult(puzzle.Value.Date, puzzle.Value.Grid, puzzle.Value.Variant);
-            //
-            //     if (statusCode != HttpStatusCode.OK)
-            //     {
-            //         WriteLine($"Result not accepted. Status code: {(int) statusCode}.");
-            //         
-            //         WriteLine();
-            //
-            //         var sleep = (int) Math.Pow(retry, 2);
-            //
-            //         for (var timer = 0; timer < sleep; timer++)
-            //         {
-            //             if (retry > 1)
-            //             {
-            //                 CursorTop -= 2;
-            //             }
-            //
-            //             WriteLine($"Waiting for {sleep - timer:N0}s before attempt {retry}.  ");
-            //
-            //             WriteLine();
-            //
-            //             Thread.Sleep(1_000);
-            //
-            //             CursorTop -= 2;
-            //         
-            //             WriteLine("Retrying...                         ");
-            //         
-            //             WriteLine();
-            //         }
-            //     }
-            //     else
-            //     {
-            //         WriteLine("Result accepted.");
-            //         
-            //         break;
-            //     }
-            // }
+            for (var retry = 1; retry < 21; retry++)
+            {
+                var statusCode = client.SendResult(puzzle.Value.Date, puzzle.Value.Grid, puzzle.Value.Variant);
+            
+                if (statusCode != HttpStatusCode.OK)
+                {
+                    WriteLine($"Result not accepted. Status code: {(int) statusCode}.");
+                    
+                    WriteLine();
+            
+                    var sleep = (int) Math.Pow(retry, 2);
+            
+                    for (var timer = 0; timer < sleep; timer++)
+                    {
+                        if (retry > 1)
+                        {
+                            CursorTop -= 2;
+                        }
+            
+                        WriteLine($"Waiting for {sleep - timer:N0}s before attempt {retry}.  ");
+            
+                        WriteLine();
+            
+                        Thread.Sleep(1_000);
+            
+                        CursorTop -= 2;
+                    
+                        WriteLine("Retrying...                         ");
+                    
+                        WriteLine();
+                    }
+                }
+                else
+                {
+                    WriteLine("Result accepted.");
+                    
+                    break;
+                }
+            }
         }
 
         WriteLine();
