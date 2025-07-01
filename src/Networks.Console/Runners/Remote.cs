@@ -134,7 +134,7 @@ public class Remote
             
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
-                    WriteLine($"Result not accepted. Status code: {(int) statusCode}.");
+                    WriteLine($"Result not accepted. Status code: {(int) response.StatusCode}.");
                     
                     WriteLine();
             
@@ -163,6 +163,12 @@ public class Remote
                 else
                 {
                     WriteLine("Result accepted.");
+                    
+                    WriteLine();
+
+                    var userResult = response.Response.GlobalLeaderboard.Single(p => p.Username.Equals("stevoj", StringComparison.InvariantCultureIgnoreCase));
+                    
+                    WriteLine($"Position: {userResult.Position:N0}, score: {userResult.Score:N0}.");
                     
                     break;
                 }
