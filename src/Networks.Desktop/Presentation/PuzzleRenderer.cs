@@ -64,6 +64,8 @@ public class PuzzleRenderer : Game
             _isComplete = false;
             
             _grid = value;
+            
+            _stopwatch.Restart();
         }
     }
 
@@ -184,10 +186,6 @@ public class PuzzleRenderer : Game
 
                         Grid = grid;
                     }
-                    else
-                    {
-                        CompleteCallback?.Invoke();
-                    }
                 }
             }
             else
@@ -208,6 +206,8 @@ public class PuzzleRenderer : Game
             if (_isComplete)
             {
                 _stopwatch.Stop();
+                
+                CompleteCallback?.Invoke();
             }
         }
 
