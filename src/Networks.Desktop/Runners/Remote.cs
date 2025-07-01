@@ -12,6 +12,8 @@ public class Remote
 {
     public void Run(RemoteOptions options)
     {
+        using var renderer = new PuzzleRenderer();
+
         var client = new PuzzleClient();
 
         for (var i = 0; i < options.Quantity; i++)
@@ -47,9 +49,9 @@ public class Remote
                 break;
             }
 
-            using var renderer = new PuzzleRenderer();
-
             renderer.Grid = puzzle.Value.Grid;
+
+            renderer.SkipFrames = 1;
 
             renderer.Run();
             
