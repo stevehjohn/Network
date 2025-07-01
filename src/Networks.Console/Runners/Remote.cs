@@ -166,10 +166,17 @@ public class Remote
                     
                     WriteLine();
 
-                    var userResult = response.Response.GlobalLeaderboard.Single(p => p.Username.Equals("stevoj", StringComparison.InvariantCultureIgnoreCase));
-                    
-                    WriteLine($"Position: {userResult.Position:N0}, score: {userResult.Score:N0}.");
-                    
+                    try
+                    {
+                        var userResult = response.Response.GlobalLeaderboard.Single(p => p.Username.Equals("stevoj", StringComparison.InvariantCultureIgnoreCase));
+
+                        WriteLine($"Position: {userResult.Position:N0}, score: {userResult.Score:N0}.");
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+
                     break;
                 }
             }
