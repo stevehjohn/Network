@@ -5,5 +5,5 @@ namespace Networks.Engine.Infrastructure;
 public class PuzzleSolvedResponse
 {
     [JsonPropertyName("global_leaderboard")]
-    public LeaderboardEntry[] GlobalLeaderboard { get; set; }
+    public LeaderboardEntry[] GlobalLeaderboard { get; init; }
 }
