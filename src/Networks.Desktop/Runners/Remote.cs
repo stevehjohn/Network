@@ -10,6 +10,8 @@ namespace Networks.Desktop.Runners;
 
 public class Remote
 {
+    private ManualResetEventSlim _puzzleCompleteEvent = new ManualResetEventSlim(false);
+    
     public void Run(RemoteOptions options)
     {
         using var renderer = new PuzzleRenderer
@@ -56,8 +58,12 @@ public class Remote
 
             renderer.SkipFrames = 1;
 
+            _puzzleCompleteEvent.Reset();
+            
             renderer.Run();
             
+            _puzzleCompleteEvent.Wait();
+
             for (var retry = 1; retry < 21; retry++)
             {
                 var statusCode = client.SendResult(puzzle.Value.Date, puzzle.Value.Grid, puzzle.Value.Variant);
@@ -81,5 +87,6 @@ public class Remote
 
     private void PuzzleComplete()
     {
+        _puzzleCompleteEvent.Set();
     }
 }
