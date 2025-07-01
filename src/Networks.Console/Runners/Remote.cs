@@ -130,9 +130,9 @@ public class Remote
 
             for (var retry = 1; retry < 21; retry++)
             {
-                var statusCode = client.SendResult(puzzle.Value.Date, puzzle.Value.Grid, puzzle.Value.Variant);
+                var response = client.SendResult(puzzle.Value.Date, puzzle.Value.Grid, puzzle.Value.Variant);
             
-                if (statusCode != HttpStatusCode.OK)
+                if (response.StatusCode != HttpStatusCode.OK)
                 {
                     WriteLine($"Result not accepted. Status code: {(int) statusCode}.");
                     

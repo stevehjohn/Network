@@ -113,7 +113,7 @@ public sealed class PuzzleClient : IDisposable
         return null;
     }
 
-    public HttpStatusCode SendResult(DateOnly date, Grid grid, int variant)
+    public (HttpStatusCode StatusCode, PuzzleSolvedResponse Response) SendResult(DateOnly date, Grid grid, int variant)
     {
         var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
@@ -147,9 +147,11 @@ public sealed class PuzzleClient : IDisposable
         
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
         
-        using var response = _client.PostAsync("user/puzzlecomplete", content).Result;
+        using var responseObject = _client.PostAsync("user/puzzlecomplete", content).Result;
 
-        return response.StatusCode;
+        var response = JsonSerializer.Deserialize<PuzzleSolvedResponse>(responseObject.Content.ReadAsStringAsync().Result, _jsonSerializerOptions);
+        
+        return (responseObject.StatusCode, response);
     }
 
     public void Dispose()
