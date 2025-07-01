@@ -58,7 +58,8 @@ public sealed class PuzzleClient : IDisposable
         
         _client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
         
-        _client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9");    }
+        _client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9");    
+    }
 
     public (DateOnly Date, Grid Grid, int Variant)? GetNextPuzzle(Difficulty difficulty)
     {
