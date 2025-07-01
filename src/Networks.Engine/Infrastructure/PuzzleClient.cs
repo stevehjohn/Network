@@ -48,7 +48,7 @@ public sealed class PuzzleClient : IDisposable
         _client = new HttpClient(_handler)
         {
             BaseAddress = new Uri(BaseUri),
-            Timeout = TimeSpan.FromSeconds(10)
+            Timeout = TimeSpan.FromSeconds(30)
         };
 
         _client.DefaultRequestHeaders.Add("User-Agent",
