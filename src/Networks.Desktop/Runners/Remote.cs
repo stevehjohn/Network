@@ -12,7 +12,10 @@ public class Remote
 {
     public void Run(RemoteOptions options)
     {
-        using var renderer = new PuzzleRenderer();
+        using var renderer = new PuzzleRenderer
+        {
+            CompleteCallback = PuzzleComplete
+        };
 
         var client = new PuzzleClient();
 
@@ -74,5 +77,9 @@ public class Remote
                 }
             }
         }
+    }
+
+    private void PuzzleComplete()
+    {
     }
 }
