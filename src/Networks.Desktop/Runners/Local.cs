@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Networks.Desktop.Presentation;
 using Networks.Engine;
 using Networks.Engine.Board;
 using Networks.Engine.Infrastructure;
@@ -14,9 +15,13 @@ public class Local
     
     public void Run(int puzzleNumber)
     {
-        Clear();
+        PuzzleManager.Path = "Data/Puzzles.json";
         
-        var solver = new Solver
+        using var renderer = new PuzzleRenderer();
+
+        renderer.Grid = PuzzleManager.Instance.GetPuzzle(int.Parse(arguments[0]));
+        
+        renderer.Run();        var solver = new Solver
         {
             StepCallback = VisualiseStep
         };
