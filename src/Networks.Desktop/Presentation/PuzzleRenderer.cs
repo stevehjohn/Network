@@ -137,7 +137,7 @@ public class PuzzleRenderer : Game
             {
                 SkipFrames = 1;
                 
-                _stopwatch.Start();
+                _stopwatch.Restart();
             }
             else
             {
