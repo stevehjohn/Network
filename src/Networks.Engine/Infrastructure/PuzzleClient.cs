@@ -52,7 +52,7 @@ public sealed class PuzzleClient : IDisposable
         };
 
         _client.DefaultRequestHeaders.Add("User-Agent",
-            "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.6998.166 Safari/537.36");
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0");
     }
 
     public (DateOnly Date, Grid Grid, int Variant)? GetNextPuzzle(Difficulty difficulty)
