@@ -28,11 +28,12 @@ public sealed class PuzzleClient : IDisposable
 
         _handler = new HttpClientHandler
         {
-            CookieContainer = cookieContainer
+            CookieContainer = cookieContainer,
+            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli
         };
 
         var lines = File.ReadAllLines("cookies.txt");
-
+        
         foreach (var line in lines)
         {
             var parts = line.Split('=');
@@ -53,12 +54,12 @@ public sealed class PuzzleClient : IDisposable
 
         _client.DefaultRequestHeaders.Add("User-Agent",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0");
-        
+
         _client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-        
+
         _client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
-        
-        _client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9");    
+
+        _client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9");
     }
 
     public (DateOnly Date, Grid Grid, int Variant)? GetNextPuzzle(Difficulty difficulty)
@@ -125,7 +126,7 @@ public sealed class PuzzleClient : IDisposable
         var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         var score = grid.Width * grid.Height * 5;
-        
+
         var builder = new StringBuilder(grid.Width * grid.Height);
 
         for (var y = 0; y < grid.Height; y++)
@@ -135,7 +136,7 @@ public sealed class PuzzleClient : IDisposable
                 builder.Append((int) grid[x, y].Rotation);
             }
         }
-        
+
         var payload = new PuzzleSolution
         {
             Type = 25,
@@ -151,13 +152,13 @@ public sealed class PuzzleClient : IDisposable
         };
 
         var json = JsonSerializer.Serialize(payload, _jsonSerializerOptions);
-        
+
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        
+
         using var responseObject = _client.PostAsync("user/puzzlecomplete", content).Result;
 
         var response = JsonSerializer.Deserialize<PuzzleSolvedResponse>(responseObject.Content.ReadAsStringAsync().Result, _jsonSerializerOptions);
-        
+
         return (responseObject.StatusCode, response);
     }
 
