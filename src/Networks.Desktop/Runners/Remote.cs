@@ -10,7 +10,7 @@ namespace Networks.Desktop.Runners;
 
 public class Remote
 {
-    private ManualResetEventSlim _puzzleCompleteEvent = new ManualResetEventSlim(false);
+    private readonly ManualResetEventSlim _puzzleCompleteEvent = new(false);
     
     public void Run(RemoteOptions options)
     {
