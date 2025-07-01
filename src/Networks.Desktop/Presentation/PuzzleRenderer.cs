@@ -50,7 +50,20 @@ public class PuzzleRenderer : Game
 
     private bool _dequeue;
 
-    public Grid Grid { get; set; }
+    private Grid _grid;
+    
+    public Grid Grid
+    {
+        get => _grid;
+        set
+        {
+            _isSolving = false;
+            
+            _isComplete = false;
+            
+            _grid = value;
+        }
+    }
 
     public int SkipFrames { get; set; }
 
