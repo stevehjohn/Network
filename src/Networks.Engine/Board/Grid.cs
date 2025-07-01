@@ -21,7 +21,7 @@ public class Grid
 
     public Point PowerSource { get; private set; }
 
-    public bool IsSolved { get; private set; } 
+    public bool IsSolved { get; private set; }
 
     public Cell this[int x, int y]
     {
@@ -110,7 +110,7 @@ public class Grid
         var visited = new HashSet<(Point, Direction)>();
 
         var poweredCount = 1;
-        
+
         while (queue.Count > 0)
         {
             var move = queue.Dequeue();
@@ -151,7 +151,7 @@ public class Grid
 
         IsSolved = poweredCount == Width * Height;
     }
-    
+
     private Grid()
     {
     }
@@ -160,7 +160,7 @@ public class Grid
     {
         return x + y * Width;
     }
-    
+
     private void Initialise(Puzzle puzzle)
     {
         Width = puzzle.GridWidth;
@@ -180,11 +180,11 @@ public class Grid
             for (var x = 0; x < Width; x++)
             {
                 var powered = x == PowerSource.X && y == PowerSource.Y;
-                
+
                 _cells[Index(x, y)] = new Cell(puzzle.Data.GridLayout[x + y * Width], Rotation.Zero, powered);
             }
         }
-        
+
         Randomise();
     }
 
@@ -195,11 +195,11 @@ public class Grid
             for (var x = 0; x < Width; x++)
             {
                 var cell = _cells[Index(x, y)];
-                
+
                 _cells[Index(x, y)] = new Cell(cell.Piece, (Rotation) _random.Next(4), x == PowerSource.X && y == PowerSource.Y);
             }
         }
-        
+
         PropagatePower();
     }
 
@@ -218,7 +218,7 @@ public class Grid
             for (var x = 0; x < Width; x++)
             {
                 var cell = _cells[Index(x, y)];
-                
+
                 switch (cell.Piece)
                 {
                     case Piece.Straight:
@@ -258,6 +258,10 @@ public class Grid
                             _ => '╻'
                         });
                         break;
+
+                    case Piece.OutOfBounds:
+                    default:
+                        throw new PuzzleException("Invalid cell.");
                 }
             }
 
