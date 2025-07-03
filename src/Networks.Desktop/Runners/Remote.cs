@@ -66,9 +66,9 @@ public class Remote
 
             for (var retry = 1; retry < 21; retry++)
             {
-                var statusCode = client.SendResult(puzzle.Value.Date, puzzle.Value.Grid, puzzle.Value.Variant);
+                var result = client.SendResult(puzzle.Value.Date, puzzle.Value.Grid, puzzle.Value.Variant);
             
-                if (statusCode != HttpStatusCode.OK)
+                if (result.StatusCode != HttpStatusCode.OK)
                 {
                     var sleep = (int) Math.Pow(retry, 2);
             
