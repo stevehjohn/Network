@@ -14,11 +14,8 @@ public class Remote
     
     public void Run(RemoteOptions options)
     {
-        using var renderer = new PuzzleRenderer
-        {
-            CompleteCallback = PuzzleComplete
-        };
-
+        using var renderer = new PuzzleRenderer();
+        
         var client = new PuzzleClient();
 
         for (var i = 0; i < options.Quantity; i++)
@@ -55,8 +52,6 @@ public class Remote
             }
 
             renderer.Grid = puzzle.Value.Grid;
-
-            renderer.SkipFrames = 1;
 
             _puzzleCompleteEvent.Reset();
             

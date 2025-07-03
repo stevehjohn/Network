@@ -25,6 +25,8 @@ public class PuzzleRenderer : Game
 
     private readonly FrameCounter _frameCounter = new();
 
+    private int _skipFrames;
+
     private readonly TileMapper _tileMapper;
 
     // ReSharper disable once NotAccessedField.Local
@@ -50,26 +52,7 @@ public class PuzzleRenderer : Game
 
     private bool _dequeue;
 
-    private Grid _grid;
-    
-    public Action CompleteCallback { get; init; }
-    
-    public Grid Grid
-    {
-        get => _grid;
-        set
-        {
-            _isSolving = false;
-            
-            _isComplete = false;
-            
-            _grid = value;
-            
-            _stopwatch.Restart();
-        }
-    }
-
-    public int SkipFrames { get; set; }
+    public Grid Grid { get; set; }
 
     public PuzzleRenderer()
     {
@@ -133,31 +116,31 @@ public class PuzzleRenderer : Game
 
         var keyboardState = Keyboard.GetState();
 
-        _dequeue = (_previousKeyboardState.IsKeyDown(Keys.Space) && keyboardState.IsKeyUp(Keys.Space)) || SkipFrames > 0;
+        _dequeue = _previousKeyboardState.IsKeyDown(Keys.Space) && keyboardState.IsKeyUp(Keys.Space);
 
         if (_previousKeyboardState.IsKeyDown(Keys.Right) && keyboardState.IsKeyUp(Keys.Right))
         {
-            if (SkipFrames == 0)
+            if (_skipFrames == 0)
             {
-                SkipFrames = 1;
+                _skipFrames = 1;
                 
-                _stopwatch.Restart();
+                _stopwatch.Start();
             }
             else
             {
-                SkipFrames *= 2;
+                _skipFrames *= 2;
             }
             
-            SkipFrames = Math.Min(SkipFrames, 1_000_000);
+            _skipFrames = Math.Min(_skipFrames, 1_000_000);
         }
 
         if (_previousKeyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyUp(Keys.Left))
         {
-            SkipFrames /= 2;
+            _skipFrames /= 2;
 
-            SkipFrames = Math.Max(SkipFrames, 0);
+            _skipFrames = Math.Max(_skipFrames, 0);
 
-            if (SkipFrames == 0)
+            if (_skipFrames == 0)
             {
                 _stopwatch.Stop();
             }
@@ -176,7 +159,7 @@ public class PuzzleRenderer : Game
 
         if (! _changeQueue.IsEmpty)
         {
-            if (SkipFrames == 0)
+            if (_skipFrames == 0)
             {
                 if (_dequeue)
                 {
@@ -190,7 +173,7 @@ public class PuzzleRenderer : Game
             }
             else
             {
-                for (var i = 0; i < SkipFrames; i++)
+                for (var i = 0; i < _skipFrames; i++)
                 {
                     if (_changeQueue.TryDequeue(out var grid))
                     {
@@ -206,8 +189,6 @@ public class PuzzleRenderer : Game
             if (_isComplete)
             {
                 _stopwatch.Stop();
-                
-                CompleteCallback?.Invoke();
             }
         }
 
@@ -247,7 +228,7 @@ public class PuzzleRenderer : Game
 
         _spriteBatch.DrawString(_font, text, new Vector2(padding * 4, _height - fontHeight * 3), Color.White);
 
-        text = $"{SkipFrames:N0}x";
+        text = $"{_skipFrames:N0}x";
 
         _spriteBatch.DrawString(_smallFont, text, new Vector2(_width - padding * 4 - _smallFont.MeasureString(text).X, _height - fontHeight * 2), Color.White);
 
