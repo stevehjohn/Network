@@ -123,6 +123,8 @@ public sealed class PuzzleClient : IDisposable
 
     public HttpStatusCode SendResult(DateOnly date, Grid grid, int variant)
     {
+        Thread.Sleep(TimeSpan.FromMilliseconds(500));
+        
         var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         var score = grid.Width * grid.Height * 5;
