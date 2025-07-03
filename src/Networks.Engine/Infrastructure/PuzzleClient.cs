@@ -65,7 +65,7 @@ public sealed class PuzzleClient : IDisposable
             return null;
         }
         
-        Thread.Sleep(TimeSpan.FromMilliseconds(250));
+        Thread.Sleep(TimeSpan.FromMilliseconds(500));
 
         var year = nextPuzzleDate.Value.Year;
 
@@ -110,12 +110,12 @@ public sealed class PuzzleClient : IDisposable
 
                 var parts = id.Split('-');
 
-                _latestYear = year;
+                _latestYear = year - 1;
 
                 return new DateOnly(int.Parse(parts[3]), int.Parse(parts[4]), int.Parse(parts[5]));
             }
             
-            Thread.Sleep(TimeSpan.FromMilliseconds(250));
+            Thread.Sleep(TimeSpan.FromMilliseconds(500));
         }
 
         return null;
