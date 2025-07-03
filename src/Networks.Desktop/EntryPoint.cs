@@ -13,8 +13,7 @@ public static class EntryPoint
             settings.CaseInsensitiveEnumValues = true;
         });
         
-        parser.ParseArguments<LocalOptions, RemoteOptions>(arguments)
-            .WithParsed<LocalOptions>(options => new Local().Run(options.PuzzleNumber))
-            .WithParsed<RemoteOptions>(options => new Remote().Run(options));
+        parser.ParseArguments<LocalOptions>(arguments)
+            .WithParsed(options => new Local().Run(options.PuzzleNumber));
     }
 }
