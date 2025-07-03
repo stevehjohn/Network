@@ -17,6 +17,8 @@ public sealed class PuzzleClient : IDisposable
 
     private readonly int _userId;
 
+    private int _latestYear = 2005;
+
     private readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         PropertyNameCaseInsensitive = true
@@ -70,6 +72,8 @@ public sealed class PuzzleClient : IDisposable
         {
             return null;
         }
+        
+        Thread.Sleep(TimeSpan.FromMilliseconds(500));
 
         var year = nextPuzzleDate.Value.Year;
 
@@ -94,7 +98,7 @@ public sealed class PuzzleClient : IDisposable
     {
         var now = DateTime.Now;
 
-        for (var year = 2005; year <= now.Year; year++)
+        for (var year = _latestYear; year <= now.Year; year++)
         {
             using var response = _client.GetAsync($"/archive/network/{difficulty.ToString().ToLower()}/{year}").Result;
 
@@ -114,8 +118,12 @@ public sealed class PuzzleClient : IDisposable
 
                 var parts = id.Split('-');
 
+                _latestYear = year - 1;
+
                 return new DateOnly(int.Parse(parts[3]), int.Parse(parts[4]), int.Parse(parts[5]));
             }
+            
+            Thread.Sleep(TimeSpan.FromMilliseconds(500));
         }
 
         return null;
@@ -123,6 +131,8 @@ public sealed class PuzzleClient : IDisposable
 
     public (HttpStatusCode StatusCode, PuzzleSolvedResponse Response) SendResult(DateOnly date, Grid grid, int variant)
     {
+        Thread.Sleep(TimeSpan.FromMilliseconds(500));
+        
         var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         var score = grid.Width * grid.Height * 5;

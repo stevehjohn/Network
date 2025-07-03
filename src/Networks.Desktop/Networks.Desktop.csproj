@@ -17,12 +17,16 @@
         <None Update="Data\Puzzles.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Update="cookies.txt">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Icon.ico"/>
         <EmbeddedResource Include="Icon.bmp"/>
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.9.1" />
         <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303"/>
         <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303"/>
     </ItemGroup>

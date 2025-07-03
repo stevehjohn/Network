@@ -190,6 +190,8 @@ public class Remote
                 }
             }
         }
+        
+        Thread.Sleep(TimeSpan.FromMinutes(1));
 
         WriteLine();
     }

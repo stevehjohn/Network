@@ -1,5 +1,6 @@
-﻿using Networks.Desktop.Presentation;
-using Networks.Engine.Infrastructure;
+﻿using CommandLine;
+using Networks.Desktop.Infrastructure;
+using Networks.Desktop.Runners;
 
 namespace Networks.Desktop;
 
@@ -7,12 +8,13 @@ public static class EntryPoint
 {
     public static void Main(string[] arguments)
     {
-        PuzzleManager.Path = "Data/Puzzles.json";
+        var parser = new Parser(settings =>
+        {
+            settings.CaseInsensitiveEnumValues = true;
+        });
         
-        using var renderer = new PuzzleRenderer();
-
-        renderer.Grid = PuzzleManager.Instance.GetPuzzle(int.Parse(arguments[0]));
-        
-        renderer.Run();
+        parser.ParseArguments<LocalOptions, RemoteOptions>(arguments)
+            .WithParsed<LocalOptions>(options => new Local().Run(options.PuzzleNumber))
+            .WithParsed<RemoteOptions>(options => new Remote().Run(options));
     }
 }
