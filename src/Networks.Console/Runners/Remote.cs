@@ -33,7 +33,7 @@ public class Remote
         {
             WriteLine();
 
-            WriteLine($"Started: {startTime:F}, runtime: {DateTime.Now - startTime::h\\:mm\\:ss\\.fff}.");
+            WriteLine($"Started: {startTime:F}, runtime: {DateTime.Now - startTime:h\\:mm\\:ss\\.fff}.");
 
             WriteLine();
 
@@ -93,7 +93,7 @@ public class Remote
 
             WriteLine();
 
-            WriteLine($"Started: {startTime:F}, runtime: {DateTime.Now - startTime::h\\:mm\\:ss\\.fff}.");
+            WriteLine($"Started: {startTime:F}, runtime: {DateTime.Now - startTime:h\\:mm\\:ss\\.fff}.");
 
             WriteLine($"Solving puzzle for {puzzle.Value.Date:R} ({puzzle.Value.Grid.Width}x{puzzle.Value.Grid.Height}).");
 
