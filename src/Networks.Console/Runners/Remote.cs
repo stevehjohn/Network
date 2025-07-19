@@ -27,8 +27,14 @@ public class Remote
 
         Clear();
 
+        var startTime = DateTime.Now;
+
         for (var i = 0; i < options.Quantity; i++)
         {
+            WriteLine();
+
+            WriteLine($"Started: {startTime:F}, runtime: {(DateTime.Now - startTime):g}.");
+
             WriteLine();
 
             WriteLine($"Fetching {options.Difficulty.ToString().ToLowerInvariant()} puzzle {i + 1:N0} of {options.Quantity:N0}...");
