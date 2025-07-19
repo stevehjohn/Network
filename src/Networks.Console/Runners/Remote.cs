@@ -33,10 +33,6 @@ public class Remote
         {
             WriteLine();
 
-            WriteLine($"Started: {startTime:F}, runtime: {DateTime.Now - startTime:h\\:mm\\:ss\\.fff}.");
-
-            WriteLine();
-
             WriteLine($"Fetching {options.Difficulty.ToString().ToLowerInvariant()} puzzle {i + 1:N0} of {options.Quantity:N0}...");
 
             WriteLine();
@@ -92,8 +88,10 @@ public class Remote
             }
 
             WriteLine();
-
+            
             WriteLine($"Started: {startTime:F}, runtime: {DateTime.Now - startTime:h\\:mm\\:ss\\.fff}.");
+
+            WriteLine();
 
             WriteLine($"Solving puzzle for {puzzle.Value.Date:R} ({puzzle.Value.Grid.Width}x{puzzle.Value.Grid.Height}).");
 
