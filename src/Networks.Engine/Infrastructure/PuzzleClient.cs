@@ -73,7 +73,7 @@ public sealed class PuzzleClient : IDisposable
             return null;
         }
         
-        Thread.Sleep(TimeSpan.FromMilliseconds(1_000));
+        Thread.Sleep(TimeSpan.FromMilliseconds(5_000));
 
         var year = nextPuzzleDate.Value.Year;
 
@@ -123,7 +123,7 @@ public sealed class PuzzleClient : IDisposable
                 return new DateOnly(int.Parse(parts[3]), int.Parse(parts[4]), int.Parse(parts[5]));
             }
             
-            Thread.Sleep(TimeSpan.FromMilliseconds(1_000));
+            Thread.Sleep(TimeSpan.FromMilliseconds(3_000));
         }
 
         return null;
