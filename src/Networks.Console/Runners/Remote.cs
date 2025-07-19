@@ -177,8 +177,8 @@ public class Remote
 
                     try
                     {
-                        var userResult = response.Response.GlobalLeaderboard.Single(p => p.Username.Equals("stevoj", StringComparison.InvariantCultureIgnoreCase));
-
+                        var userResult = response.Response!.GlobalLeaderboard.Single(p => p.Username.Equals("Stevö9506315", StringComparison.InvariantCultureIgnoreCase));
+                    
                         WriteLine($"Position: {userResult.Position:N0}, score: {userResult.Score:N0}.");
                     }
                     catch
