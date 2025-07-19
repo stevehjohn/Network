@@ -93,7 +93,7 @@ public class Remote
 
             WriteLine();
 
-            WriteLine($"Solving puzzle for {puzzle.Value.Date:R} ({puzzle.Value.Grid.Width}x{puzzle.Value.Grid.Height}).");
+            WriteLine($"Solving puzzle for {puzzle.Value.Date:D} ({puzzle.Value.Grid.Width}x{puzzle.Value.Grid.Height}).");
 
             WriteLine();
 
@@ -185,7 +185,7 @@ public class Remote
 
                     try
                     {
-                        var userResult = response.Response!.GlobalLeaderboard.Single(p => p.Username.Equals("Stevö9506315", StringComparison.InvariantCultureIgnoreCase));
+                        var userResult = response.Response!.GlobalLeaderboard.Single(p => p.Username.Equals("StevöHJ", StringComparison.InvariantCultureIgnoreCase));
                     
                         WriteLine($"Position: {userResult.Position:N0}, score: {userResult.Score:N0}.");
                     }
